@@ -515,8 +515,9 @@ function requireAdminPwd(callback) {
 
 function checkAdminPwd() {
   if (document.getElementById('pwdInput').value === ADMIN_PWD) {
+    var callback = pwdCallback;
     closePwdModal();
-    if (pwdCallback) pwdCallback();
+    if (callback) callback();
   } else {
     document.getElementById('pwdErr').style.display = 'block';
   }
