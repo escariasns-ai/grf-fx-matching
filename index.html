@@ -740,7 +740,7 @@ async function renderMatching() {
       '<div class="page-hdr" style="display:flex;align-items:baseline;justify-content:space-between">' +
         '<div><div class="page-title">Live Matching</div>' +
         '<div class="page-sub">Real-time buy/sell netting across all companies</div></div>' +
-        (isAdmin ? '<button class="btn btn-success btn-sm" onclick="triggerMatch()">▶ Run Auto-Match</button>' : '') +
+        (isAdmin ? '<button class="btn btn-success btn-sm" onclick="triggerMatch(this)">▶ Run Auto-Match</button>' : '') +
       '</div>' +
 
       (!rate ? '<div class="alert warn"><b>⚠ No rate set today.</b> Set the daily rate first.</div>' : '') +
@@ -1368,12 +1368,15 @@ async function renderAudit() {
 }
 
 /* ════════════════ TRIGGER MATCH ════════════════ */
-async function triggerMatch() {
+async function triggerMatch(btn) {
   requireAdminPwd(async function(){
-    var btn = event.target;
-    btn.textContent = '⏳ Matching...'; btn.disabled = true;
+    if (btn) {
+      btn.textContent = '⏳ Matching...'; btn.disabled = true;
+    }
     await runAutoMatch();
-    btn.textContent = '✅ Done'; btn.disabled = false;
+    if (btn) {
+      btn.textContent = '✅ Done'; btn.disabled = false;
+    }
     setTimeout(function(){ showPage('matching'); }, 800);
   });
 }
