@@ -1,0 +1,2052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GRF Forex Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f0f4f8;--surface:#fff;--surface2:#f7f9fc;--surface3:#eef1f5;
+  --border:#dde3ec;--border2:#c8d2de;
+  --text:#1a2535;--text2:#4a5e72;--text3:#8a9eb5;--text4:#b8c8d8;
+  --accent:#2563eb;--accent-bg:#eff4ff;--accent-bd:#bfdbfe;
+  --green:#0d7a4e;--green-bg:#ecfaf3;--green-bd:#a3d9be;
+  --red:#b91c3c;--red-bg:#fff0f3;--red-bd:#f4a8b8;
+  --amber:#92600a;--amber-bg:#fffbeb;--amber-bd:#f0d090;
+  --orange:#c45000;--teal:#0d9488;--teal-bg:#f0fdfa;--teal-bd:#99f6e4;
+  --purple:#7c3aed;--purple-bg:#faf5ff;--purple-bd:#ddd6fe;
+  --shadow:0 1px 3px rgba(0,30,60,.07),0 1px 2px rgba(0,30,60,.05);
+  --shadow-md:0 4px 14px rgba(0,30,60,.09);
+  --shadow-lg:0 10px 30px rgba(0,0,0,.11);
+  --r:10px;--rs:6px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.6;min-height:100vh;}
+
+/* ── TOPBAR ── */
+.topbar{background:var(--text);height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:200;}
+.tb-brand{display:flex;align-items:center;gap:10px;}
+.tb-mark{width:30px;height:30px;border-radius:6px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;}
+.tb-name{font-size:15px;font-weight:700;color:#fff;letter-spacing:-.3px;}
+.tb-sub{font-size:11px;color:rgba(255,255,255,.45);margin-top:-2px;}
+.tb-right{display:flex;align-items:center;gap:10px;}
+.tb-user{font-size:12px;font-weight:600;color:rgba(255,255,255,.7);}
+.tb-role{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700;}
+.tb-role.admin{background:rgba(239,68,68,.2);color:#fca5a5;}
+.tb-role.user{background:rgba(59,130,246,.2);color:#93c5fd;}
+.tb-role.super{background:rgba(124,58,237,.2);color:#c4b5fd;}
+.tb-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.8);padding:5px 12px;border-radius:var(--rs);font-family:'IBM Plex Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:.15s;}
+.tb-btn:hover{background:rgba(255,255,255,.18);}
+
+/* ── SIDENAV ── */
+.layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 52px);}
+.sidenav{background:var(--surface);border-right:1px solid var(--border);padding:16px 0;}
+.nav-section{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text4);padding:10px 18px 6px;}
+.nav-item{display:flex;align-items:center;gap:8px;padding:8px 18px;cursor:pointer;font-size:13px;font-weight:500;color:var(--text2);transition:.15s;border-left:3px solid transparent;}
+.nav-item:hover{background:var(--surface2);color:var(--text);}
+.nav-item.active{background:var(--accent-bg);color:var(--accent);border-left-color:var(--accent);font-weight:600;}
+.nav-item .nav-icon{font-size:15px;width:18px;text-align:center;}
+.nav-divider{height:1px;background:var(--border);margin:8px 0;}
+
+/* ── MAIN CONTENT ── */
+.main{padding:24px;overflow-y:auto;}
+.page-hdr{margin-bottom:20px;}
+.page-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--text);letter-spacing:-.3px;}
+.page-sub{font-size:12px;color:var(--text3);margin-top:2px;}
+
+/* ── CARDS & GRIDS ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);padding:20px;}
+.card-sm{padding:14px 16px;}
+.card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.card-title{font-size:13px;font-weight:700;color:var(--text2);letter-spacing:.2px;}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+@media(max-width:1100px){.grid-4{grid-template-columns:repeat(2,1fr);}}
+
+/* ── KPI CARDS ── */
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;position:relative;overflow:hidden;transition:.2s;}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.kpi.blue::before{background:var(--accent);}
+.kpi.green::before{background:var(--green);}
+.kpi.amber::before{background:#d97706;}
+.kpi.red::before{background:var(--red);}
+.kpi.teal::before{background:var(--teal);}
+.kpi.purple::before{background:var(--purple);}
+.kpi-label{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--text3);margin-bottom:5px;}
+.kpi-val{font-family:'IBM Plex Mono',monospace;font-size:24px;font-weight:500;line-height:1;margin-bottom:3px;}
+.kpi-val.blue{color:var(--accent);}
+.kpi-val.green{color:var(--green);}
+.kpi-val.amber{color:#d97706;}
+.kpi-val.red{color:var(--red);}
+.kpi-val.teal{color:var(--teal);}
+.kpi-val.purple{color:var(--purple);}
+.kpi-sub{font-size:11px;color:var(--text3);}
+
+/* ── TABLES ── */
+.tbl-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+thead tr{background:var(--surface2);}
+th{padding:8px 12px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--text3);border-bottom:1.5px solid var(--border);}
+th.r{text-align:right;}
+td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:middle;}
+td.r{text-align:right;font-family:'IBM Plex Mono',monospace;}
+td.dim{color:var(--text3);font-size:11.5px;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover{background:var(--surface2);}
+
+/* ── BADGES ── */
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;white-space:nowrap;}
+.badge.buy{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd);}
+.badge.sell{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd);}
+.badge.pending{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd);}
+.badge.matched{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd);}
+.badge.partial{background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent-bd);}
+.badge.settled{background:var(--surface2);color:var(--text3);border:1px solid var(--border);}
+.badge.expired{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd);}
+.badge.admin{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd);}
+.badge.super_admin{background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple-bd);}
+.badge.user{background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent-bd);}
+
+/* ── FORMS ── */
+.fg{margin-bottom:12px;}
+.flbl{font-size:12px;font-weight:600;color:var(--text2);display:block;margin-bottom:4px;}
+.fi,.fsel{width:100%;padding:8px 11px;background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--rs);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:14px;outline:none;transition:.2s;}
+.fsel{font-family:'IBM Plex Sans',sans-serif;font-size:13px;}
+.fi:focus,.fsel:focus{border-color:var(--accent);background:#fff;}
+.fi::placeholder{color:var(--text4);}
+.btn{padding:8px 18px;border-radius:var(--rs);font-family:'IBM Plex Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:.15s;}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 2px 6px rgba(37,99,235,.25);}
+.btn-primary:hover{background:#1d4ed8;}
+.btn-success{background:var(--green);color:#fff;}
+.btn-success:hover{background:#0a6040;}
+.btn-danger{background:var(--red);color:#fff;}
+.btn-danger:hover{background:#9b1a35;}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--text2);}
+.btn-ghost:hover{background:var(--surface2);}
+.btn-sm{padding:4px 12px;font-size:11px;}
+.btn-full{width:100%;padding:11px;}
+
+/* ── MODALS ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(10,20,40,.5);z-index:1000;align-items:flex-start;justify-content:center;padding:24px 16px;overflow-y:auto;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--surface);border-radius:14px;box-shadow:var(--shadow-lg);width:100%;max-width:540px;overflow:hidden;margin:auto;}
+.modal-hdr{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid var(--border);background:var(--surface2);}
+.modal-title{font-size:16px;font-weight:700;}
+.modal-close{background:none;border:none;font-size:22px;color:var(--text3);cursor:pointer;padding:0 6px;}
+.modal-body{padding:22px;}
+.modal-footer{display:flex;gap:8px;padding:14px 22px;border-top:1px solid var(--border);background:var(--surface2);}
+
+/* ── COUNTDOWN ── */
+.countdown{display:inline-flex;align-items:center;gap:4px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;padding:3px 8px;border-radius:4px;}
+.countdown.ok{background:var(--green-bg);color:var(--green);}
+.countdown.warn{background:var(--amber-bg);color:var(--amber);}
+.countdown.urgent{background:var(--red-bg);color:var(--red);animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.6;}}
+
+/* ── MATCHING VISUAL ── */
+.match-row{display:flex;align-items:center;gap:0;margin-bottom:6px;}
+.match-cell{padding:8px 12px;font-size:12px;border:1px solid var(--border);background:var(--surface);}
+.match-cell:first-child{border-radius:var(--rs) 0 0 var(--rs);}
+.match-cell:last-child{border-radius:0 var(--rs) var(--rs) 0;}
+.match-arrow{padding:0 6px;font-size:16px;color:var(--green);}
+.match-cell.buy-side{background:var(--green-bg);border-color:var(--green-bd);}
+.match-cell.sell-side{background:var(--red-bg);border-color:var(--red-bd);}
+.match-cell.saving{background:var(--accent-bg);border-color:var(--accent-bd);color:var(--accent);font-weight:700;}
+
+/* ── RATE BOX ── */
+.rate-display{background:var(--text);border-radius:var(--r);padding:16px 22px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.rate-display .rd-label{font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:rgba(255,255,255,.5);}
+.rate-display .rd-rate{font-family:'IBM Plex Mono',monospace;font-size:32px;font-weight:500;color:#fff;}
+.rate-display .rd-meta{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px;}
+.rate-display .rd-badge{background:var(--green);color:#fff;padding:4px 12px;border-radius:12px;font-size:11px;font-weight:700;}
+
+/* ── LOGIN PAGE ── */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg);padding:20px;}
+.login-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow-lg);padding:36px 36px;width:100%;max-width:400px;}
+.login-logo{display:flex;align-items:center;gap:10px;margin-bottom:24px;}
+.login-mark{width:40px;height:40px;border-radius:10px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;}
+.login-title{font-size:18px;font-weight:700;color:var(--text);}
+.login-sub{font-size:12px;color:var(--text3);}
+.err-msg{background:var(--red-bg);border:1px solid var(--red-bd);color:var(--red);padding:8px 12px;border-radius:var(--rs);font-size:12px;margin-bottom:12px;}
+.ok-msg{background:var(--green-bg);border:1px solid var(--green-bd);color:var(--green);padding:8px 12px;border-radius:var(--rs);font-size:12px;margin-bottom:12px;}
+
+/* ── COMPANY TABS ── */
+.co-tabs{display:flex;gap:4px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:3px;margin-bottom:14px;flex-wrap:wrap;}
+.co-tab{padding:5px 14px;border-radius:5px;font-size:12px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--text3);transition:.15s;}
+.co-tab.active{background:var(--accent);color:#fff;}
+.co-tab:not(.active):hover{background:var(--surface);color:var(--text2);}
+
+/* ── EXPOSURE BAR ── */
+.exp-bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin:4px 0;}
+.exp-bar-fill{height:100%;border-radius:4px;transition:width .4s;}
+.exp-bar-fill.buy{background:var(--green);}
+.exp-bar-fill.sell{background:var(--red);}
+.exp-bar-fill.net{background:var(--accent);}
+
+/* ── ALERT ── */
+.alert{padding:10px 14px;border-radius:var(--rs);font-size:12.5px;margin-bottom:12px;line-height:1.5;}
+.alert.info{background:var(--accent-bg);border:1px solid var(--accent-bd);color:var(--text2);}
+.alert.info b{color:var(--accent);}
+.alert.warn{background:var(--amber-bg);border:1px solid var(--amber-bd);color:var(--amber);}
+.alert.success{background:var(--green-bg);border:1px solid var(--green-bd);color:var(--green);}
+.alert.danger{background:var(--red-bg);border:1px solid var(--red-bd);color:var(--red);}
+
+/* ── EMPTY STATE ── */
+.empty{text-align:center;padding:40px 20px;color:var(--text3);}
+.empty-icon{font-size:36px;margin-bottom:10px;}
+.empty-title{font-size:16px;font-weight:600;color:var(--text2);margin-bottom:6px;}
+.empty-sub{font-size:13px;}
+
+/* ── SAVINGS HIGHLIGHT ── */
+.saving-big{font-family:'IBM Plex Mono',monospace;font-size:28px;font-weight:600;color:var(--green);}
+.saving-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--green);}
+
+/* ── FX DEAL ENTRY CSS ── */
+.pair-tab-row{display:flex;gap:4px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:3px;margin-bottom:14px;}
+.pair-tab{padding:5px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--text3);transition:.15s;}
+.pair-tab.active{background:var(--accent);color:#fff;}
+.pair-tab:not(.active):hover{background:var(--surface);color:var(--text2);}
+.rate-card{background:var(--text);border-radius:var(--r);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;cursor:pointer;}
+.rate-card:hover{opacity:.92;}
+.rate-card .rc-val{font-family:'IBM Plex Mono',monospace;font-size:30px;font-weight:500;color:#fff;}
+.rate-card .rc-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.45);}
+.rate-card .rc-src{font-size:11px;color:rgba(255,255,255,.35);margin-top:2px;}
+.rate-card .rc-dir{font-size:12px;font-weight:600;}
+.rate-card .rc-dir.up{color:#4ade80;}
+.rate-card .rc-dir.down{color:#f87171;}
+.pip-gauge{height:10px;background:linear-gradient(to right,#16a34a 0%,#059669 30%,#ea580c 55%,#d97706 72%,#dc2626 88%,#991b1b 100%);border-radius:5px;position:relative;margin:10px 0 6px;}
+.pip-gauge-marker{width:14px;height:14px;border-radius:50%;background:#fff;border:2px solid #1a2535;position:absolute;top:50%;transform:translate(-50%,-50%);transition:left .3s;box-shadow:0 1px 4px rgba(0,0,0,.3);}
+.pip-result{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);margin-bottom:12px;}
+.pip-result.stellar{background:var(--green-bg);border-color:var(--green-bd);}
+.pip-result.ok{background:var(--accent-bg);border-color:var(--accent-bd);}
+.pip-result.caution{background:#fff4ed;border-color:#f9c9a0;}
+.pip-result.warn{background:var(--amber-bg);border-color:var(--amber-bd);}
+.pip-result.bad{background:var(--red-bg);border-color:var(--red-bd);}
+.pip-pips{font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:600;}
+.pip-pips.stellar{color:var(--green);}
+.pip-pips.ok{color:var(--accent);}
+.pip-pips.caution{color:var(--orange);}
+.pip-pips.warn{color:var(--amber);}
+.pip-pips.bad{color:var(--red);}
+.amount-result{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:10px 14px;margin-bottom:10px;}
+.amount-result .ar-label{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;}
+.amount-result .ar-val{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;color:var(--accent);}
+.amount-result .ar-words{font-size:10.5px;color:#6366f1;font-style:italic;margin-top:2px;}
+.email-preview-wrap{background:#f1f5f9;border:1px solid var(--border);border-radius:var(--rs);padding:16px;margin-top:10px;max-height:400px;overflow-y:auto;}
+.deal-confirm-btn{width:100%;padding:12px;border-radius:var(--rs);background:var(--accent);color:#fff;border:none;font-family:'IBM Plex Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:.15s;margin-top:6px;}
+.deal-confirm-btn:hover{background:#1d4ed8;}
+.deal-confirm-btn:disabled{background:var(--border2);cursor:not-allowed;color:var(--text3);}
+.bench-note{padding:8px 12px;border-radius:var(--rs);font-size:12px;font-weight:600;border:1.5px solid;margin-bottom:10px;}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ LOGIN PAGE ══════════════ -->
+<div id="loginPage" class="login-wrap">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-mark">GRF</div>
+      <div>
+        <div class="login-title">Internal FX Matching</div>
+        <div class="login-sub">Treasury Operations Portal</div>
+      </div>
+    </div>
+    <div id="loginErr" class="err-msg" style="display:none"></div>
+    <div class="fg">
+      <label class="flbl">Email Address</label>
+      <input class="fi" type="email" id="loginEmail" placeholder="you@grfholdings.com">
+    </div>
+    <div class="fg">
+      <label class="flbl">PIN</label>
+      <input class="fi" type="password" id="loginPin" placeholder="6-digit PIN" maxlength="6">
+    </div>
+    <button class="btn btn-primary btn-full" onclick="doLogin()">Sign In</button>
+    <p style="font-size:11px;color:var(--text4);text-align:center;margin-top:14px">
+      Contact your admin to create an account or reset your PIN
+    </p>
+  </div>
+</div>
+
+<!-- ══════════════ MAIN APP ══════════════ -->
+<div id="appWrap" style="display:none">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="tb-brand">
+    <div class="tb-mark">GRF</div>
+    <div>
+      <div class="tb-name">Internal FX Matching</div>
+      <div class="tb-sub">Treasury Operations</div>
+    </div>
+  </div>
+  <div class="tb-right">
+    <button class="tb-btn" onclick="goPortal()" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.15);margin-right:4px" title="Back to Portal">&#8592; Portal</button>
+    <span class="tb-user" id="tbUserName"></span>
+    <span class="tb-role" id="tbUserRole"></span>
+    <button class="tb-btn" onclick="doLogout()">Sign Out</button>
+  </div>
+</div>
+
+<div class="layout">
+<!-- SIDENAV -->
+<div class="sidenav">
+  <div class="nav-section">Overview</div>
+  <div class="nav-item active" onclick="showPage('dashboard')" data-page="dashboard">
+    <span class="nav-icon">📊</span> Dashboard
+  </div>
+  <div class="nav-item" onclick="showPage('matching')" data-page="matching">
+    <span class="nav-icon">🔄</span> Live Matching
+  </div>
+  <div class="nav-item" onclick="showPage('settlements')" data-page="settlements">
+    <span class="nav-icon">⏱</span> Settlements
+  </div>
+
+  <div class="nav-divider"></div>
+  <div class="nav-section">My Requests</div>
+  <div class="nav-item" onclick="showPage('submit')" data-page="submit">
+    <span class="nav-icon">➕</span> New Request
+  </div>
+  <div class="nav-item" onclick="showPage('myrequests')" data-page="myrequests">
+    <span class="nav-icon">📋</span> My Requests
+  </div>
+
+  <div class="nav-divider"></div>
+  <div class="nav-section">FX Deals</div>
+  <div class="nav-item fx-deals-nav" onclick="showPage('dealentry')" data-page="dealentry">
+    <span class="nav-icon">💱</span> Deal Entry
+  </div>
+  <div class="nav-item fx-deals-nav" onclick="showPage('dealhistory')" data-page="dealhistory">
+    <span class="nav-icon">📈</span> Deal History
+  </div>
+
+  <div class="nav-divider"></div>
+  <div class="nav-section" id="adminNavSection">Admin</div>
+  <div class="nav-item admin-only" onclick="showPage('rate')" data-page="rate">
+    <span class="nav-icon">💱</span> Daily Rate
+  </div>
+  <div class="nav-item admin-only" onclick="showPage('users')" data-page="users">
+    <span class="nav-icon">👥</span> Users
+  </div>
+  <div class="nav-item admin-only" onclick="showPage('groups')" data-page="groups">
+    <span class="nav-icon">🏢</span> Groups
+  </div>
+
+  <div class="nav-divider"></div>
+  <div class="nav-section">Audit</div>
+  <div class="nav-item" onclick="showPage('audit')" data-page="audit">
+    <span class="nav-icon">📜</span> Audit Trail
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main" id="mainContent">
+  <div class="empty"><div class="empty-icon">⏳</div><div class="empty-title">Loading...</div></div>
+</div>
+</div>
+</div>
+
+<!-- ══════════════ MODALS ══════════════ -->
+
+<!-- Password gate modal -->
+<div class="modal-overlay" id="pwdModal">
+  <div class="modal" style="max-width:360px">
+    <div class="modal-hdr">
+      <div class="modal-title">🔒 Admin Password Required</div>
+      <button class="modal-close" onclick="closePwdModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div id="pwdErr" class="err-msg" style="display:none">Incorrect password</div>
+      <div class="fg">
+        <label class="flbl">Enter Admin Password</label>
+        <input class="fi" type="password" id="pwdInput" placeholder="Password">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="checkAdminPwd()" style="flex:1">Confirm</button>
+      <button class="btn btn-ghost" onclick="closePwdModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Settle modal -->
+<div class="modal-overlay" id="settleModal">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-hdr">
+      <div class="modal-title">✅ Confirm Settlement</div>
+      <button class="modal-close" onclick="document.getElementById('settleModal').classList.remove('open')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div id="settleDetails" style="margin-bottom:14px"></div>
+      <div class="fg">
+        <label class="flbl">Settlement Notes (optional)</label>
+        <textarea class="fi" id="settleNotes" rows="2" placeholder="e.g. Funds transferred via SWIFT" style="resize:vertical;font-family:'IBM Plex Sans',sans-serif;font-size:13px"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-success" onclick="confirmSettle()" style="flex:1">Mark as Settled</button>
+      <button class="btn btn-ghost" onclick="document.getElementById('settleModal').classList.remove('open')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+/* ════════════════════════════════════════════════
+   SSO INTEGRATION — reads session from GRF Portal
+════════════════════════════════════════════════ */
+var SSO_KEY = 'grf_sso_session';
+
+function readSsoSession() {
+  try {
+    var raw = localStorage.getItem(SSO_KEY);
+    if (!raw) return null;
+    var s = JSON.parse(raw);
+    if (!s || !s.user || !s.expiresAt) return null;
+    if (new Date(s.expiresAt) < new Date()) { localStorage.removeItem(SSO_KEY); return null; }
+    return s;
+  } catch(e) { return null; }
+}
+
+function goPortal() {
+  window.location.href = 'index.html';
+}
+
+/* Module access by role */
+var MODULE_ROLES = ['super_admin','admin','user','fx_trader'];
+
+/* ════════════════════════════════════════════════
+   GRF INTERNAL FX MATCHING MODULE
+   Full application with Supabase backend
+════════════════════════════════════════════════ */
+
+/* ── CONFIG ── */
+var SUPABASE_URL = 'https://yeqhplhlnfmgakcdayfk.supabase.co';
+var SUPABASE_KEY = 'sb_publishable_JXQkSHzlHv_Bm0IbNoMQ-Q_egZ4-N0j';
+var ADMIN_PWD    = '987';
+var SETTLE_MINS  = 60; // default settlement deadline in minutes
+
+/* ── STATE ── */
+var currentUser   = null;
+var currentPage   = 'dashboard';
+var pwdCallback   = null;
+var settleMatchId = null;
+var countdownIntervals = {};
+
+/* ── COMPANIES & GROUPS (seeded) ── */
+var COMPANIES = [
+  {id:'NVR', name:'Novaris'},
+  {id:'MDS', name:'Medspire'},
+  {id:'ARC', name:'Arcon'},
+  {id:'SWN', name:'Swenston'}
+];
+
+/* ════════════════ API HELPERS ════════════════ */
+function sbHdr(extra) {
+  return Object.assign({
+    'apikey': SUPABASE_KEY,
+    'Authorization': 'Bearer ' + SUPABASE_KEY,
+    'Content-Type': 'application/json',
+    'Prefer': 'return=representation'
+  }, extra || {});
+}
+
+async function sbGet(table, query) {
+  var q = query || 'select=*';
+  var res = await fetch(SUPABASE_URL + '/rest/v1/' + table + '?' + q,
+    {headers: {'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY}});
+  if (!res.ok) throw new Error('GET ' + table + ' HTTP ' + res.status);
+  return res.json();
+}
+
+async function sbPost(table, data) {
+  var res = await fetch(SUPABASE_URL + '/rest/v1/' + table, {
+    method: 'POST', headers: sbHdr(), body: JSON.stringify(data)
+  });
+  if (!res.ok) { var e = await res.text(); throw new Error(e); }
+  return res.json();
+}
+
+async function sbPatch(table, filter, data) {
+  var res = await fetch(SUPABASE_URL + '/rest/v1/' + table + '?' + filter, {
+    method: 'PATCH', headers: sbHdr(), body: JSON.stringify(data)
+  });
+  if (!res.ok) throw new Error('PATCH ' + table + ' HTTP ' + res.status);
+}
+
+/* ════════════════ AUTH ════════════════ */
+async function doLogin() {
+  var email = document.getElementById('loginEmail').value.trim().toLowerCase();
+  var pin   = document.getElementById('loginPin').value.trim();
+  if (!email || !pin) { showLoginErr('Email and PIN are required'); return; }
+  try {
+    var rows = await sbGet('ifx_users', 'select=*&email=eq.' + encodeURIComponent(email) + '&active=eq.true');
+    if (!rows.length) { showLoginErr('No active account found for this email'); return; }
+    var user = rows[0];
+    if (String(user.pin) !== String(pin)) { showLoginErr('Incorrect PIN'); return; }
+    currentUser = user;
+    await logAudit('LOGIN', 'user', user.id, 'User logged in');
+    startApp();
+  } catch(e) {
+    showLoginErr('Login failed: ' + e.message);
+  }
+}
+
+function showLoginErr(msg) {
+  var el = document.getElementById('loginErr');
+  el.textContent = msg; el.style.display = 'block';
+}
+
+function doLogout() {
+  if (currentUser) logAudit('LOGOUT', 'user', currentUser.id, 'User logged out');
+  currentUser = null;
+  document.getElementById('appWrap').style.display = 'none';
+  document.getElementById('loginPage').style.display = 'flex';
+  document.getElementById('loginEmail').value = '';
+  document.getElementById('loginPin').value = '';
+  document.getElementById('loginErr').style.display = 'none';
+  Object.values(countdownIntervals).forEach(clearInterval);
+  countdownIntervals = {};
+}
+
+function startApp() {
+  document.getElementById('loginPage').style.display = 'none';
+  document.getElementById('appWrap').style.display = 'block';
+  document.getElementById('tbUserName').textContent = currentUser.name;
+  var roleEl = document.getElementById('tbUserRole');
+  roleEl.textContent = currentUser.role.replace('_', ' ');
+  roleEl.className = 'tb-role ' + currentUser.role;
+  // Hide admin nav if not admin
+  var isAdmin = (currentUser.role === 'admin' || currentUser.role === 'super_admin');
+  document.querySelectorAll('.admin-only').forEach(function(el){ el.style.display = isAdmin ? '' : 'none'; });
+  document.getElementById('adminNavSection').style.display = isAdmin ? '' : 'none';
+  // FX Deals visible to admin/super_admin/fx_trader roles
+  var canFxDeal = isAdmin || currentUser.role === 'fx_trader';
+  document.querySelectorAll('.fx-deals-nav').forEach(function(el){ el.style.display = canFxDeal ? '' : 'none'; });
+  showPage('dashboard');
+}
+
+/* ════════════════ NAVIGATION ════════════════ */
+function showPage(page) {
+  currentPage = page;
+  document.querySelectorAll('.nav-item').forEach(function(el){
+    el.classList.toggle('active', el.getAttribute('data-page') === page);
+  });
+  var main = document.getElementById('mainContent');
+  main.innerHTML = '<div class="empty"><div class="empty-icon">⏳</div><div class="empty-title">Loading...</div></div>';
+  var pages = {
+    dashboard:   renderDashboard,
+    matching:    renderMatching,
+    settlements: renderSettlements,
+    submit:      renderSubmit,
+    myrequests:  renderMyRequests,
+    rate:        renderRate,
+    users:       renderUsers,
+    groups:      renderGroups,
+    audit:       renderAudit,
+    dealentry:   renderDealEntry,
+    dealhistory: renderDealHistory
+  };
+  if (pages[page]) pages[page]();
+}
+
+/* ════════════════ ADMIN PASSWORD GATE ════════════════ */
+function requireAdminPwd(callback) {
+  pwdCallback = callback;
+  document.getElementById('pwdInput').value = '';
+  document.getElementById('pwdErr').style.display = 'none';
+  document.getElementById('pwdModal').classList.add('open');
+  setTimeout(function(){ document.getElementById('pwdInput').focus(); }, 100);
+}
+
+function checkAdminPwd() {
+  if (document.getElementById('pwdInput').value === ADMIN_PWD) {
+    closePwdModal();
+    if (pwdCallback) pwdCallback();
+  } else {
+    document.getElementById('pwdErr').style.display = 'block';
+  }
+}
+
+function closePwdModal() {
+  document.getElementById('pwdModal').classList.remove('open');
+  pwdCallback = null;
+}
+
+document.addEventListener('keydown', function(e){
+  if (e.key === 'Escape') { closePwdModal(); document.getElementById('settleModal').classList.remove('open'); }
+  if (e.key === 'Enter' && document.getElementById('pwdModal').classList.contains('open')) checkAdminPwd();
+});
+
+/* ════════════════ AUDIT LOG ════════════════ */
+async function logAudit(action, entityType, entityId, details) {
+  try {
+    await sbPost('ifx_audit', {
+      user_id: currentUser ? currentUser.id : null,
+      user_name: currentUser ? currentUser.name : 'system',
+      action: action,
+      entity_type: entityType,
+      entity_id: String(entityId || ''),
+      details: details,
+      timestamp: new Date().toISOString()
+    });
+  } catch(e) { console.warn('Audit log failed:', e.message); }
+}
+
+/* ════════════════ MATCHING ENGINE ════════════════ */
+async function runAutoMatch() {
+  try {
+    // Load all pending/partial requests
+    var requests = await sbGet('ifx_requests', 'select=*&status=in.(pending,partial)&order=created_at.asc');
+    var dailyRate = await getTodayRate();
+    if (!dailyRate) return;
+
+    var buys  = requests.filter(function(r){ return r.type === 'buy'  && r.remaining_amount > 0; });
+    var sells = requests.filter(function(r){ return r.type === 'sell' && r.remaining_amount > 0; });
+
+    // Sort: largest first for optimal netting
+    buys.sort(function(a,b){ return b.remaining_amount - a.remaining_amount; });
+    sells.sort(function(a,b){ return b.remaining_amount - a.remaining_amount; });
+
+    for (var i = 0; i < buys.length; i++) {
+      var buy = buys[i];
+      for (var j = 0; j < sells.length; j++) {
+        var sell = sells[j];
+        if (buy.remaining_amount <= 0) break;
+        if (sell.remaining_amount <= 0) continue;
+        if (buy.currency_pair !== sell.currency_pair) continue;
+
+        var matchAmt  = Math.min(buy.remaining_amount, sell.remaining_amount);
+        var bankSaving = matchAmt * Math.abs(dailyRate.bank_mid - dailyRate.internal_rate);
+        var deadline  = new Date(Date.now() + SETTLE_MINS * 60000).toISOString();
+
+        // Create match record
+        var matchNo = 'MX' + Date.now();
+        await sbPost('ifx_matches', {
+          match_no:       matchNo,
+          buy_request_id: buy.id,
+          sell_request_id:sell.id,
+          buy_company:    buy.company_code,
+          sell_company:   sell.company_code,
+          buy_group:      buy.group_name,
+          sell_group:     sell.group_name,
+          currency_pair:  buy.currency_pair,
+          matched_amount: matchAmt,
+          internal_rate:  dailyRate.internal_rate,
+          bank_mid:       dailyRate.bank_mid,
+          saving_amount:  parseFloat(bankSaving.toFixed(2)),
+          status:         'pending_settlement',
+          settlement_deadline: deadline,
+          created_at:     new Date().toISOString()
+        });
+
+        // Update remaining amounts
+        buy.remaining_amount  -= matchAmt;
+        sell.remaining_amount -= matchAmt;
+
+        var buyStatus  = buy.remaining_amount  <= 0 ? 'matched' : 'partial';
+        var sellStatus = sell.remaining_amount <= 0 ? 'matched' : 'partial';
+
+        await sbPatch('ifx_requests', 'id=eq.' + buy.id,
+          {remaining_amount: buy.remaining_amount, status: buyStatus});
+        await sbPatch('ifx_requests', 'id=eq.' + sell.id,
+          {remaining_amount: sell.remaining_amount, status: sellStatus});
+
+        await logAudit('MATCH_CREATED', 'match', matchNo,
+          'Matched ' + fmtAmt(matchAmt) + ' ' + buy.currency_pair +
+          ' buy(' + buy.company_code + ') sell(' + sell.company_code + ') saving: ' + fmtAmt(bankSaving));
+      }
+    }
+  } catch(e) { console.error('Auto-match error:', e); }
+}
+
+async function getTodayRate() {
+  try {
+    var today = new Date().toISOString().slice(0,10);
+    var rows  = await sbGet('ifx_daily_rates', 'select=*&rate_date=eq.' + today + '&order=created_at.desc&limit=1');
+    return rows.length ? rows[0] : null;
+  } catch(e) { return null; }
+}
+
+/* ════════════════ PAGE: DASHBOARD ════════════════ */
+async function renderDashboard() {
+  var main = document.getElementById('mainContent');
+  try {
+    var [requests, matches, rate] = await Promise.all([
+      sbGet('ifx_requests', 'select=*'),
+      sbGet('ifx_matches',  'select=*'),
+      getTodayRate()
+    ]);
+
+    var pending   = requests.filter(function(r){ return r.status === 'pending' || r.status === 'partial'; });
+    var totalBuy  = pending.filter(function(r){ return r.type==='buy'; }).reduce(function(s,r){ return s+r.remaining_amount;},0);
+    var totalSell = pending.filter(function(r){ return r.type==='sell';}).reduce(function(s,r){ return s+r.remaining_amount;},0);
+    var totalMatched = matches.reduce(function(s,m){ return s+m.matched_amount; }, 0);
+    var totalSaving  = matches.reduce(function(s,m){ return s+m.saving_amount; }, 0);
+    var pendingSettle= matches.filter(function(m){ return m.status==='pending_settlement'; });
+    var bankNeeded   = Math.abs(totalBuy - totalSell);
+
+    main.innerHTML =
+      '<div class="page-hdr">' +
+        '<div class="page-title">FX Matching Dashboard</div>' +
+        '<div class="page-sub">Internal exposure, net positions & cost savings across all companies</div>' +
+      '</div>' +
+
+      // Rate banner
+      (rate ?
+        '<div class="rate-display">' +
+          '<div><div class="rd-label">Today\'s In-House FX Rate (EUR/USD)</div>' +
+            '<div class="rd-rate">' + rate.internal_rate.toFixed(5) + '</div>' +
+            '<div class="rd-meta">Bank mid: ' + rate.bank_mid.toFixed(5) + ' &nbsp;|&nbsp; Set by: ' + rate.set_by + ' at ' + fmtTime(rate.created_at) + '</div>' +
+          '</div>' +
+          '<div class="rd-badge">✓ Rate Active</div>' +
+        '</div>'
+      : '<div class="alert warn"><b>⚠ No rate set today.</b> An admin must set the in-house FX rate before matching can proceed.</div>') +
+
+      // KPIs
+      '<div class="grid-4">' +
+        kpi('Total Buy Exposure', fmtAmt(totalBuy), 'EUR', 'green') +
+        kpi('Total Sell Exposure', fmtAmt(totalSell), 'EUR', 'red') +
+        kpi('Total Matched', fmtAmt(totalMatched), 'EUR matched internally', 'teal') +
+        kpi('Cost Savings', fmtAmt(totalSaving), 'USD saved vs bank', 'green') +
+      '</div>' +
+      '<div class="grid-4">' +
+        kpi('Pending Requests', pending.length, 'awaiting match', 'amber') +
+        kpi('Active Matches', pendingSettle.length, 'awaiting settlement', 'blue') +
+        kpi('Bank Settlement Needed', fmtAmt(bankNeeded), 'unmatched residual → bank', 'amber') +
+        kpi('Match Rate', totalBuy + totalSell > 0 ? Math.round(totalMatched*2/(totalBuy+totalSell)*100)+'%' : '0%', 'internal vs total volume', 'purple') +
+      '</div>' +
+
+      // Company breakdowns
+      '<div class="page-hdr" style="margin-top:8px"><div class="page-title" style="font-size:18px">Company Exposures</div></div>' +
+      renderCompanyExposures(requests, matches) +
+
+      // Pending settlements with countdowns
+      (pendingSettle.length ?
+        '<div class="page-hdr" style="margin-top:8px"><div class="page-title" style="font-size:18px">⏱ Pending Settlements</div></div>' +
+        renderSettlementTable(pendingSettle, true)
+      : '') +
+
+      // Net benefit highlight
+      '<div class="card" style="margin-top:14px;text-align:center;padding:24px">' +
+        '<div class="saving-label">💚 Total Internal Matching Benefit</div>' +
+        '<div class="saving-big" style="font-size:36px;margin:8px 0">' + fmtAmt(totalSaving) + ' USD</div>' +
+        '<div style="font-size:13px;color:var(--text3)">Saved by matching internally instead of going to the bank</div>' +
+        '<div style="font-size:12px;color:var(--text4);margin-top:4px">' +
+          'Formula: Matched Volume × |Bank Mid – Internal Rate| per matched pair' +
+        '</div>' +
+      '</div>';
+
+    // Start countdown timers
+    startCountdowns();
+  } catch(e) {
+    main.innerHTML = '<div class="alert danger">Error loading dashboard: ' + e.message + '</div>';
+  }
+}
+
+function renderCompanyExposures(requests, matches) {
+  return '<div class="grid-4">' +
+    COMPANIES.map(function(co) {
+      var coReqs   = requests.filter(function(r){ return r.company_code === co.id; });
+      var coBuy    = coReqs.filter(function(r){ return r.type==='buy'; }).reduce(function(s,r){ return s+r.remaining_amount;},0);
+      var coSell   = coReqs.filter(function(r){ return r.type==='sell';}).reduce(function(s,r){ return s+r.remaining_amount;},0);
+      var coMatch  = matches.filter(function(m){ return m.buy_company===co.id||m.sell_company===co.id;});
+      var coSaving = coMatch.reduce(function(s,m){ return s+m.saving_amount;},0);
+      var net = coBuy - coSell;
+      return '<div class="card card-sm">' +
+        '<div class="card-hdr"><div class="card-title">' + co.name + '</div>' +
+          '<span class="badge ' + (net>=0?'buy':'sell') + '">' + (net>=0?'Net Buyer':'Net Seller') + '</span>' +
+        '</div>' +
+        '<table style="width:100%;font-size:12px">' +
+          '<tr><td style="color:var(--text3)">Buy Exposure</td><td style="text-align:right;font-family:IBM Plex Mono,monospace;color:var(--green)">' + fmtAmt(coBuy) + '</td></tr>' +
+          '<tr><td style="color:var(--text3)">Sell Exposure</td><td style="text-align:right;font-family:IBM Plex Mono,monospace;color:var(--red)">' + fmtAmt(coSell) + '</td></tr>' +
+          '<tr style="border-top:1px solid var(--border)"><td style="color:var(--text3);font-weight:600">Net</td><td style="text-align:right;font-family:IBM Plex Mono,monospace;font-weight:700;color:' + (net>=0?'var(--green)':'var(--red)') + '">' + (net>=0?'+':'') + fmtAmt(net) + '</td></tr>' +
+          '<tr><td style="color:var(--text3)">Savings</td><td style="text-align:right;font-family:IBM Plex Mono,monospace;color:var(--teal)">' + fmtAmt(coSaving) + '</td></tr>' +
+        '</table>' +
+      '</div>';
+    }).join('') +
+  '</div>';
+}
+
+/* ════════════════ PAGE: LIVE MATCHING ════════════════ */
+async function renderMatching() {
+  var main = document.getElementById('mainContent');
+  try {
+    var [requests, matches, rate] = await Promise.all([
+      sbGet('ifx_requests', 'select=*&order=created_at.desc'),
+      sbGet('ifx_matches',  'select=*&order=created_at.desc&limit=50'),
+      getTodayRate()
+    ]);
+
+    var pending = requests.filter(function(r){ return r.status==='pending'||r.status==='partial'; });
+    var isAdmin = currentUser.role==='admin'||currentUser.role==='super_admin';
+
+    main.innerHTML =
+      '<div class="page-hdr" style="display:flex;align-items:baseline;justify-content:space-between">' +
+        '<div><div class="page-title">Live Matching</div>' +
+        '<div class="page-sub">Real-time buy/sell netting across all companies</div></div>' +
+        (isAdmin ? '<button class="btn btn-success btn-sm" onclick="triggerMatch()">▶ Run Auto-Match</button>' : '') +
+      '</div>' +
+
+      (!rate ? '<div class="alert warn"><b>⚠ No rate set today.</b> Set the daily rate first.</div>' : '') +
+
+      // Pending open positions
+      '<div class="card" style="margin-bottom:14px">' +
+        '<div class="card-hdr"><div class="card-title">Open Positions (Pending Match)</div>' +
+          '<span style="font-size:12px;color:var(--text3)">' + pending.length + ' requests</span>' +
+        '</div>' +
+        (pending.length ? renderOpenPositionsTable(pending) :
+          '<div class="empty"><div class="empty-icon">✅</div><div class="empty-title">All matched!</div></div>') +
+      '</div>' +
+
+      // Recent matches
+      '<div class="card">' +
+        '<div class="card-hdr"><div class="card-title">Recent Matches</div>' +
+          '<span style="font-size:12px;color:var(--text3)">' + matches.length + ' matches</span>' +
+        '</div>' +
+        (matches.length ? renderMatchesTable(matches) :
+          '<div class="empty"><div class="empty-icon">🔄</div><div class="empty-title">No matches yet</div></div>') +
+      '</div>';
+  } catch(e) {
+    main.innerHTML = '<div class="alert danger">Error: ' + e.message + '</div>';
+  }
+}
+
+function renderOpenPositionsTable(requests) {
+  return '<div class="tbl-wrap"><table>' +
+    '<thead><tr>' +
+      '<th>Req No.</th><th>Company</th><th>Group</th><th>Type</th>' +
+      '<th>Pair</th><th class="r">Original</th><th class="r">Remaining</th>' +
+      '<th>Status</th><th>Age</th>' +
+    '</tr></thead><tbody>' +
+    requests.map(function(r){
+      return '<tr>' +
+        '<td class="dim">' + r.request_no + '</td>' +
+        '<td style="font-weight:600">' + r.company_code + '</td>' +
+        '<td class="dim">' + (r.group_name||'—') + '</td>' +
+        '<td><span class="badge ' + r.type + '">' + r.type.toUpperCase() + '</span></td>' +
+        '<td class="dim">' + r.currency_pair + '</td>' +
+        '<td class="r">' + fmtAmt(r.amount) + '</td>' +
+        '<td class="r" style="font-weight:700;color:var(--accent)">' + fmtAmt(r.remaining_amount) + '</td>' +
+        '<td><span class="badge ' + r.status + '">' + r.status + '</span></td>' +
+        '<td class="dim">' + timeAgo(r.created_at) + '</td>' +
+      '</tr>';
+    }).join('') +
+    '</tbody></table></div>';
+}
+
+function renderMatchesTable(matches) {
+  return '<div class="tbl-wrap"><table>' +
+    '<thead><tr>' +
+      '<th>Match No.</th><th>Buyer</th><th>Seller</th><th>Pair</th>' +
+      '<th class="r">Amount</th><th class="r">Internal Rate</th>' +
+      '<th class="r">Saving (USD)</th><th>Status</th><th>Deadline</th>' +
+    '</tr></thead><tbody>' +
+    matches.map(function(m){
+      var expired = m.status==='pending_settlement' && new Date(m.settlement_deadline) < new Date();
+      return '<tr>' +
+        '<td style="font-family:IBM Plex Mono,monospace;font-size:12px">' + m.match_no + '</td>' +
+        '<td><span class="badge buy">' + m.buy_company + '</span> ' + (m.buy_group||'') + '</td>' +
+        '<td><span class="badge sell">' + m.sell_company + '</span> ' + (m.sell_group||'') + '</td>' +
+        '<td class="dim">' + m.currency_pair + '</td>' +
+        '<td class="r">' + fmtAmt(m.matched_amount) + '</td>' +
+        '<td class="r">' + (m.internal_rate||'').toFixed(5) + '</td>' +
+        '<td class="r" style="color:var(--green);font-weight:600">' + fmtAmt(m.saving_amount) + '</td>' +
+        '<td><span class="badge ' + m.status.replace('_settlement','').replace('pending','pending') + '">' + m.status + '</span></td>' +
+        '<td>' + (m.status==='pending_settlement'
+          ? '<span class="countdown ' + countdownClass(m.settlement_deadline) + '" id="cd_' + m.id + '">' + formatCountdown(m.settlement_deadline) + '</span>'
+          : '<span class="dim">' + (m.settled_at ? fmtTime(m.settled_at) : '—') + '</span>') + '</td>' +
+      '</tr>';
+    }).join('') +
+    '</tbody></table></div>';
+}
+
+/* ════════════════ PAGE: SETTLEMENTS ════════════════ */
+async function renderSettlements() {
+  var main = document.getElementById('mainContent');
+  try {
+    var matches = await sbGet('ifx_matches', 'select=*&order=created_at.desc');
+    var pending = matches.filter(function(m){ return m.status==='pending_settlement'; });
+    var settled = matches.filter(function(m){ return m.status==='settled'; });
+
+    main.innerHTML =
+      '<div class="page-hdr"><div class="page-title">Settlement Centre</div>' +
+        '<div class="page-sub">Track and complete matched deal settlements within the time limit</div>' +
+      '</div>' +
+
+      '<div class="grid-3" style="margin-bottom:16px">' +
+        kpi('Pending Settlement', pending.length, 'matches awaiting confirmation', 'amber') +
+        kpi('Completed Today', settled.filter(function(m){ return m.settled_at && m.settled_at.slice(0,10)===new Date().toISOString().slice(0,10); }).length, 'settled today', 'green') +
+        kpi('Settlement Limit', SETTLE_MINS + ' min', 'default time per match', 'blue') +
+      '</div>' +
+
+      (pending.length ?
+        '<div class="card">' +
+          '<div class="card-hdr"><div class="card-title">⏱ Pending Settlements</div></div>' +
+          renderSettlementTable(pending, true) +
+        '</div>'
+      : '<div class="alert success">✅ All matches are settled.</div>') +
+
+      '<div class="card" style="margin-top:14px">' +
+        '<div class="card-hdr"><div class="card-title">✅ Settled Matches</div>' +
+          '<span style="font-size:12px;color:var(--text3)">' + settled.length + ' total</span>' +
+        '</div>' +
+        (settled.length ?
+          '<div class="tbl-wrap"><table>' +
+            '<thead><tr><th>Match No.</th><th>Buyer</th><th>Seller</th><th class="r">Amount</th>' +
+              '<th class="r">Saving</th><th>Settled At</th><th>Notes</th></tr></thead><tbody>' +
+            settled.map(function(m){
+              return '<tr>' +
+                '<td class="dim">' + m.match_no + '</td>' +
+                '<td>' + m.buy_company + ' ' + (m.buy_group||'') + '</td>' +
+                '<td>' + m.sell_company + ' ' + (m.sell_group||'') + '</td>' +
+                '<td class="r">' + fmtAmt(m.matched_amount) + '</td>' +
+                '<td class="r" style="color:var(--green)">' + fmtAmt(m.saving_amount) + '</td>' +
+                '<td class="dim">' + fmtTime(m.settled_at) + '</td>' +
+                '<td class="dim" style="font-style:italic">' + (m.settlement_notes||'—') + '</td>' +
+              '</tr>';
+            }).join('') +
+          '</tbody></table></div>'
+        : '<div class="empty"><div class="empty-title">No settled matches yet</div></div>') +
+      '</div>';
+
+    startCountdowns();
+  } catch(e) {
+    main.innerHTML = '<div class="alert danger">Error: ' + e.message + '</div>';
+  }
+}
+
+function renderSettlementTable(matches, showSettle) {
+  return '<div class="tbl-wrap"><table>' +
+    '<thead><tr>' +
+      '<th>Match No.</th><th>Buyer Co.</th><th>Seller Co.</th><th>Pair</th>' +
+      '<th class="r">Amount</th><th class="r">Saving</th>' +
+      '<th>Deadline</th>' + (showSettle ? '<th>Action</th>' : '') +
+    '</tr></thead><tbody>' +
+    matches.map(function(m){
+      return '<tr>' +
+        '<td style="font-family:IBM Plex Mono,monospace;font-size:12px">' + m.match_no + '</td>' +
+        '<td><span class="badge buy">' + m.buy_company + '</span></td>' +
+        '<td><span class="badge sell">' + m.sell_company + '</span></td>' +
+        '<td class="dim">' + m.currency_pair + '</td>' +
+        '<td class="r">' + fmtAmt(m.matched_amount) + '</td>' +
+        '<td class="r" style="color:var(--green);font-weight:600">+' + fmtAmt(m.saving_amount) + '</td>' +
+        '<td><span class="countdown ' + countdownClass(m.settlement_deadline) + '" id="cd_' + m.id + '">' + formatCountdown(m.settlement_deadline) + '</span></td>' +
+        (showSettle ? '<td><button class="btn btn-success btn-sm" onclick="openSettleModal(\'' + m.id + '\',\'' + m.match_no + '\',' + m.matched_amount + ',\'' + m.currency_pair + '\')">Settle</button></td>' : '') +
+      '</tr>';
+    }).join('') +
+    '</tbody></table></div>';
+}
+
+function openSettleModal(id, matchNo, amount, pair) {
+  settleMatchId = id;
+  document.getElementById('settleDetails').innerHTML =
+    '<div class="alert info">' +
+      '<b>Match:</b> ' + matchNo + '&nbsp;&nbsp;' +
+      '<b>Amount:</b> ' + fmtAmt(amount) + ' ' + pair + '<br>' +
+      'Confirming settlement means both counterparts have transferred funds.' +
+    '</div>';
+  document.getElementById('settleNotes').value = '';
+  document.getElementById('settleModal').classList.add('open');
+}
+
+async function confirmSettle() {
+  if (!settleMatchId) return;
+  try {
+    var notes = document.getElementById('settleNotes').value;
+    await sbPatch('ifx_matches', 'id=eq.' + settleMatchId, {
+      status: 'settled',
+      settled_at: new Date().toISOString(),
+      settlement_notes: notes
+    });
+    await logAudit('SETTLE', 'match', settleMatchId, 'Match settled. Notes: ' + notes);
+    document.getElementById('settleModal').classList.remove('open');
+    showPage('settlements');
+  } catch(e) { alert('Error: ' + e.message); }
+}
+
+/* ════════════════ PAGE: SUBMIT REQUEST ════════════════ */
+async function renderSubmit() {
+  var main = document.getElementById('mainContent');
+  try {
+    var groups = await sbGet('ifx_groups', 'select=*&active=eq.true&order=company_code.asc');
+    var rate   = await getTodayRate();
+    var userGroups = groups.filter(function(g){
+      return currentUser.role==='super_admin' || currentUser.role==='admin' ||
+             g.company_code === currentUser.company_code;
+    });
+
+    main.innerHTML =
+      '<div class="page-hdr"><div class="page-title">New FX Request</div>' +
+        '<div class="page-sub">Submit a buy or sell requirement for internal matching</div>' +
+      '</div>' +
+
+      (!rate ? '<div class="alert warn"><b>⚠ No rate set today.</b> Contact your admin.</div>' : '') +
+
+      '<div class="grid-2">' +
+        '<div class="card">' +
+          '<div class="card-hdr"><div class="card-title">Request Details</div></div>' +
+          '<div id="submitMsg"></div>' +
+          '<div class="fg"><label class="flbl">Company</label>' +
+            '<select class="fsel" id="reqCompany" onchange="filterGroupsByCompany()">' +
+              '<option value="">-- Select Company --</option>' +
+              COMPANIES.map(function(c){ return '<option value="' + c.id + '">' + c.name + '</option>'; }).join('') +
+            '</select>' +
+          '</div>' +
+          '<div class="fg"><label class="flbl">Group</label>' +
+            '<select class="fsel" id="reqGroup">' +
+              '<option value="">-- Select Company First --</option>' +
+            '</select>' +
+          '</div>' +
+          '<div class="fg"><label class="flbl">Transaction Type</label>' +
+            '<select class="fsel" id="reqType">' +
+              '<option value="buy">BUY EUR (need euros)</option>' +
+              '<option value="sell">SELL EUR (have euros)</option>' +
+            '</select>' +
+          '</div>' +
+          '<div class="fg"><label class="flbl">Currency Pair</label>' +
+            '<select class="fsel" id="reqPair">' +
+              '<option value="EUR/USD">EUR / USD</option>' +
+              '<option value="USD/ZAR">USD / ZAR</option>' +
+            '</select>' +
+          '</div>' +
+          '<div class="fg"><label class="flbl">Amount (EUR)</label>' +
+            '<input class="fi" type="number" id="reqAmount" placeholder="e.g. 500000" min="1000">' +
+          '</div>' +
+          '<div class="fg"><label class="flbl">Remarks (optional)</label>' +
+            '<input class="fi" type="text" id="reqRemarks" placeholder="e.g. Monthly supplier payment">' +
+          '</div>' +
+          '<button class="btn btn-primary btn-full" onclick="submitRequest()">Submit Request</button>' +
+        '</div>' +
+
+        '<div>' +
+          (rate ?
+            '<div class="card" style="margin-bottom:12px">' +
+              '<div class="card-title" style="margin-bottom:8px">📈 Today\'s Rate</div>' +
+              '<div style="font-family:IBM Plex Mono,monospace;font-size:28px;font-weight:500;color:var(--text)">' + rate.internal_rate.toFixed(5) + '</div>' +
+              '<div style="font-size:12px;color:var(--text3);margin-top:4px">Internal rate · Bank mid: ' + rate.bank_mid.toFixed(5) + '</div>' +
+              '<div class="alert info" style="margin-top:12px;font-size:12px">Using the internal rate saves <b>' + (Math.abs(rate.bank_mid - rate.internal_rate)*10000).toFixed(1) + ' pips</b> vs the bank mid-market rate</div>' +
+            '</div>'
+          : '') +
+          '<div class="card">' +
+            '<div class="card-title" style="margin-bottom:8px">ℹ How It Works</div>' +
+            '<div style="font-size:12px;color:var(--text2);line-height:1.8">' +
+              '1. Submit your buy or sell requirement<br>' +
+              '2. The system auto-matches with opposite requests<br>' +
+              '3. Matched deals must be settled within <b>' + SETTLE_MINS + ' minutes</b><br>' +
+              '4. Unmatched amounts go to the bank<br>' +
+              '5. You save the bank spread on all matched volume' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+
+    // Store groups for filtering
+    window._allGroups = userGroups;
+    // Pre-select user's company
+    if (currentUser.company_code) {
+      document.getElementById('reqCompany').value = currentUser.company_code;
+      filterGroupsByCompany();
+    }
+  } catch(e) {
+    main.innerHTML = '<div class="alert danger">Error: ' + e.message + '</div>';
+  }
+}
+
+function filterGroupsByCompany() {
+  var co  = document.getElementById('reqCompany').value;
+  var sel = document.getElementById('reqGroup');
+  sel.innerHTML = '<option value="">-- Select Group --</option>';
+  (window._allGroups || []).filter(function(g){ return g.company_code === co; }).forEach(function(g){
+    var o = document.createElement('option'); o.value = g.id; o.textContent = g.name; sel.appendChild(o);
+  });
+}
+
+async function submitRequest() {
+  var company  = document.getElementById('reqCompany').value;
+  var groupId  = document.getElementById('reqGroup').value;
+  var type     = document.getElementById('reqType').value;
+  var pair     = document.getElementById('reqPair').value;
+  var amount   = parseFloat(document.getElementById('reqAmount').value);
+  var remarks  = document.getElementById('reqRemarks').value;
+  var msgEl    = document.getElementById('submitMsg');
+
+  if (!company || !groupId || !amount || amount < 1000) {
+    msgEl.innerHTML = '<div class="err-msg">Please fill all required fields. Minimum amount: 1,000.</div>';
+    return;
+  }
+  var rate = await getTodayRate();
+  if (!rate) { msgEl.innerHTML = '<div class="err-msg">No rate set today. Contact admin.</div>'; return; }
+
+  try {
+    var group = (window._allGroups || []).find(function(g){ return g.id == groupId; });
+    var reqNo = 'RQ' + Date.now();
+    await sbPost('ifx_requests', {
+      request_no:       reqNo,
+      user_id:          currentUser.id,
+      user_name:        currentUser.name,
+      company_code:     company,
+      group_id:         groupId,
+      group_name:       group ? group.name : '',
+      type:             type,
+      currency_pair:    pair,
+      amount:           amount,
+      remaining_amount: amount,
+      rate_at_request:  rate.internal_rate,
+      status:           'pending',
+      remarks:          remarks,
+      created_at:       new Date().toISOString()
+    });
+    await logAudit('REQUEST_SUBMITTED', 'request', reqNo,
+      type.toUpperCase() + ' ' + fmtAmt(amount) + ' ' + pair + ' by ' + currentUser.name + ' (' + company + ')');
+    msgEl.innerHTML = '<div class="ok-msg">✅ Request ' + reqNo + ' submitted. Running auto-match...</div>';
+    await runAutoMatch();
+    msgEl.innerHTML = '<div class="ok-msg">✅ Request submitted and matching complete.</div>';
+  } catch(e) {
+    msgEl.innerHTML = '<div class="err-msg">Error: ' + e.message + '</div>';
+  }
+}
+
+/* ════════════════ PAGE: MY REQUESTS ════════════════ */
+async function renderMyRequests() {
+  var main = document.getElementById('mainContent');
+  try {
+    var filter = currentUser.role==='super_admin' ? 'select=*&order=created_at.desc'
+                 : 'select=*&user_id=eq.' + currentUser.id + '&order=created_at.desc';
+    var requests = await sbGet('ifx_requests', filter);
+
+    main.innerHTML =
+      '<div class="page-hdr"><div class="page-title">My Requests</div>' +
+        '<div class="page-sub">' + (currentUser.role==='super_admin' ? 'All requests (admin view)' : 'Your submitted requests') + '</div>' +
+      '</div>' +
+      (requests.length ?
+        '<div class="card"><div class="tbl-wrap"><table>' +
+          '<thead><tr><th>Req No.</th><th>Date</th><th>Company</th><th>Group</th>' +
+            '<th>Type</th><th>Pair</th><th class="r">Amount</th><th class="r">Remaining</th>' +
+            '<th>Status</th><th>Remarks</th></tr></thead><tbody>' +
+          requests.map(function(r){
+            return '<tr>' +
+              '<td style="font-family:IBM Plex Mono,monospace;font-size:12px">' + r.request_no + '</td>' +
+              '<td class="dim">' + fmtDate(r.created_at) + '</td>' +
+              '<td style="font-weight:600">' + r.company_code + '</td>' +
+              '<td class="dim">' + (r.group_name||'—') + '</td>' +
+              '<td><span class="badge ' + r.type + '">' + r.type.toUpperCase() + '</span></td>' +
+              '<td class="dim">' + r.currency_pair + '</td>' +
+              '<td class="r">' + fmtAmt(r.amount) + '</td>' +
+              '<td class="r" style="font-weight:600">' + fmtAmt(r.remaining_amount) + '</td>' +
+              '<td><span class="badge ' + r.status + '">' + r.status + '</span></td>' +
+              '<td class="dim" style="font-size:11px;font-style:italic">' + (r.remarks||'') + '</td>' +
+            '</tr>';
+          }).join('') +
+        '</tbody></table></div></div>'
+      : '<div class="empty"><div class="empty-icon">📋</div><div class="empty-title">No requests yet</div><div class="empty-sub">Submit your first FX request from the New Request page</div></div>');
+  } catch(e) {
+    main.innerHTML = '<div class="alert danger">Error: ' + e.message + '</div>';
+  }
+}
+
+/* ════════════════ PAGE: DAILY RATE (ADMIN) ════════════════ */
+async function renderRate() {
+  var main = document.getElementById('mainContent');
+  try {
+    var today    = new Date().toISOString().slice(0,10);
+    var history  = await sbGet('ifx_daily_rates', 'select=*&order=rate_date.desc&limit=10');
+    var todayRow = history.find(function(r){ return r.rate_date === today; });
+
+    main.innerHTML =
+      '<div class="page-hdr"><div class="page-title">Daily FX Rate Management</div>' +
+        '<div class="page-sub">Set and manage the internal in-house rate used for all today\'s matches</div>' +
+      '</div>' +
+
+      (todayRow ?
+        '<div class="alert success">✅ Today\'s rate is set: <b>' + todayRow.internal_rate.toFixed(5) + ' EUR/USD</b> · Bank mid: ' + todayRow.bank_mid.toFixed(5) + ' · Set by: ' + todayRow.set_by + '</div>'
+      : '<div class="alert warn">⚠ No rate set for today yet. Set it below before any matching can occur.</div>') +
+
+      '<div class="grid-2">' +
+        '<div class="card">' +
+          '<div class="card-hdr"><div class="card-title">🔒 Set Today\'s In-House Rate</div></div>' +
+          '<div id="rateMsg"></div>' +
+          '<div class="fg"><label class="flbl">Internal In-House Rate (EUR/USD)</label>' +
+            '<input class="fi" type="number" id="rateInternal" step="0.00001" placeholder="e.g. 1.17250" value="' + (todayRow ? todayRow.internal_rate : '') + '">' +
+          '</div>' +
+          '<div class="fg"><label class="flbl">Bank Mid-Market Reference Rate</label>' +
+            '<input class="fi" type="number" id="rateBankMid" step="0.00001" placeholder="e.g. 1.17300" value="' + (todayRow ? todayRow.bank_mid : '') + '">' +
+            '<div style="font-size:11px;color:var(--text3);margin-top:3px">Used for savings calculation. Get from FXStreet/Reuters.</div>' +
+          '</div>' +
+          '<div class="fg"><label class="flbl">Settlement Time Limit (minutes)</label>' +
+            '<input class="fi" type="number" id="settleLimit" value="' + SETTLE_MINS + '" min="15" max="480">' +
+          '</div>' +
+          '<button class="btn btn-primary btn-full" onclick="setDailyRate()">🔒 Set Rate (Password Required)</button>' +
+        '</div>' +
+
+        '<div class="card">' +
+          '<div class="card-hdr"><div class="card-title">Rate History</div></div>' +
+          (history.length ?
+            '<table><thead><tr><th>Date</th><th class="r">Internal Rate</th><th class="r">Bank Mid</th><th class="r">Saving (pips)</th><th>Set By</th></tr></thead><tbody>' +
+            history.map(function(r){
+              var saving = Math.abs(r.bank_mid - r.internal_rate) * 10000;
+              return '<tr>' +
+                '<td class="dim">' + r.rate_date + '</td>' +
+                '<td class="r" style="font-family:IBM Plex Mono,monospace;font-weight:600">' + r.internal_rate.toFixed(5) + '</td>' +
+                '<td class="r" style="font-family:IBM Plex Mono,monospace">' + r.bank_mid.toFixed(5) + '</td>' +
+                '<td class="r" style="color:var(--green);font-weight:700">' + saving.toFixed(1) + '</td>' +
+                '<td class="dim">' + r.set_by + '</td>' +
+              '</tr>';
+            }).join('') +
+            '</tbody></table>'
+          : '<div class="empty"><div class="empty-title">No rate history</div></div>') +
+        '</div>' +
+      '</div>';
+  } catch(e) {
+    main.innerHTML = '<div class="alert danger">Error: ' + e.message + '</div>';
+  }
+}
+
+function setDailyRate() {
+  requireAdminPwd(async function() {
+    var internal = parseFloat(document.getElementById('rateInternal').value);
+    var bankMid  = parseFloat(document.getElementById('rateBankMid').value);
+    var settleMin= parseInt(document.getElementById('settleLimit').value) || 60;
+    var msgEl    = document.getElementById('rateMsg');
+    if (!internal || !bankMid || internal < 0.5 || internal > 3) {
+      msgEl.innerHTML = '<div class="err-msg">Please enter valid EUR/USD rates (0.5–3.0 range)</div>'; return;
+    }
+    try {
+      SETTLE_MINS = settleMin;
+      var today = new Date().toISOString().slice(0,10);
+      // Upsert today's rate
+      await fetch(SUPABASE_URL + '/rest/v1/ifx_daily_rates?on_conflict=rate_date', {
+        method: 'POST',
+        headers: Object.assign({}, {'Prefer': 'resolution=merge-duplicates,return=representation'}, {
+          'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json'
+        }),
+        body: JSON.stringify({
+          rate_date: today, internal_rate: internal, bank_mid: bankMid,
+          set_by: currentUser.name, created_at: new Date().toISOString()
+        })
+      });
+      await logAudit('RATE_SET', 'rate', today, 'Internal: ' + internal + ' BankMid: ' + bankMid);
+      msgEl.innerHTML = '<div class="ok-msg">✅ Rate set successfully for ' + today + '</div>';
+      setTimeout(function(){ renderRate(); }, 1500);
+    } catch(e) {
+      msgEl.innerHTML = '<div class="err-msg">Error: ' + e.message + '</div>';
+    }
+  });
+}
+
+/* ════════════════ PAGE: USER MANAGEMENT (ADMIN) ════════════════ */
+async function renderUsers() {
+  var main = document.getElementById('mainContent');
+  try {
+    var users = await sbGet('ifx_users', 'select=*&order=created_at.desc');
+    main.innerHTML =
+      '<div class="page-hdr" style="display:flex;align-items:baseline;justify-content:space-between">' +
+        '<div><div class="page-title">User Management</div><div class="page-sub">Create and manage portal access</div></div>' +
+        '<button class="btn btn-primary btn-sm" onclick="showAddUser()">+ Add User</button>' +
+      '</div>' +
+      '<div id="userFormWrap" style="display:none">' + renderAddUserForm() + '</div>' +
+      '<div class="card">' +
+        '<div class="tbl-wrap"><table>' +
+          '<thead><tr><th>Name</th><th>Email</th><th>Company</th><th>Role</th><th>PIN</th><th>Status</th><th>Actions</th></tr></thead>' +
+          '<tbody>' +
+          users.map(function(u){
+            return '<tr>' +
+              '<td style="font-weight:600">' + u.name + '</td>' +
+              '<td class="dim">' + u.email + '</td>' +
+              '<td>' + (u.company_code||'—') + '</td>' +
+              '<td><span class="badge ' + u.role + '">' + u.role + '</span></td>' +
+              '<td style="font-family:IBM Plex Mono,monospace;letter-spacing:2px">••••••</td>' +
+              '<td><span class="badge ' + (u.active?'matched':'expired') + '">' + (u.active?'Active':'Inactive') + '</span></td>' +
+              '<td><button class="btn btn-ghost btn-sm" onclick="toggleUser(' + u.id + ',' + u.active + ')">' + (u.active?'Deactivate':'Activate') + '</button></td>' +
+            '</tr>';
+          }).join('') +
+        '</tbody></table></div>' +
+      '</div>';
+  } catch(e) {
+    main.innerHTML = '<div class="alert danger">Error: ' + e.message + '</div>';
+  }
+}
+
+function renderAddUserForm() {
+  return '<div class="card" style="margin-bottom:14px">' +
+    '<div class="card-hdr"><div class="card-title">➕ Create New User</div><button class="btn btn-ghost btn-sm" onclick="document.getElementById(\'userFormWrap\').style.display=\'none\'">Cancel</button></div>' +
+    '<div id="userMsg"></div>' +
+    '<div class="grid-2">' +
+      '<div class="fg"><label class="flbl">Full Name</label><input class="fi" type="text" id="uName" placeholder="John Smith"></div>' +
+      '<div class="fg"><label class="flbl">Email</label><input class="fi" type="email" id="uEmail" placeholder="john@grfholdings.com"></div>' +
+      '<div class="fg"><label class="flbl">Role</label><select class="fsel" id="uRole"><option value="user">User</option><option value="admin">Company Admin</option><option value="super_admin">Super Admin</option></select></div>' +
+      '<div class="fg"><label class="flbl">Company</label><select class="fsel" id="uCompany"><option value="">-- Select --</option>' +
+        COMPANIES.map(function(c){ return '<option value="' + c.id + '">' + c.name + '</option>'; }).join('') +
+      '</select></div>' +
+      '<div class="fg"><label class="flbl">6-Digit PIN</label><input class="fi" type="text" id="uPin" placeholder="e.g. 123456" maxlength="6" pattern="[0-9]{6}"></div>' +
+    '</div>' +
+    '<button class="btn btn-success" onclick="createUser()">Create User</button>' +
+  '</div>';
+}
+
+function showAddUser() {
+  document.getElementById('userFormWrap').style.display = 'block';
+  document.getElementById('userFormWrap').scrollIntoView({behavior:'smooth'});
+}
+
+async function createUser() {
+  var name = document.getElementById('uName').value.trim();
+  var email= document.getElementById('uEmail').value.trim().toLowerCase();
+  var role = document.getElementById('uRole').value;
+  var co   = document.getElementById('uCompany').value;
+  var pin  = document.getElementById('uPin').value.trim();
+  var msgEl= document.getElementById('userMsg');
+  if (!name||!email||!pin||pin.length!==6||!/^\d+$/.test(pin)) {
+    msgEl.innerHTML = '<div class="err-msg">Please fill all fields. PIN must be 6 digits.</div>'; return;
+  }
+  try {
+    await sbPost('ifx_users', {name:name,email:email,role:role,company_code:co,pin:pin,active:true,created_at:new Date().toISOString()});
+    await logAudit('USER_CREATED','user',email,'Created '+role+' for '+co);
+    msgEl.innerHTML = '<div class="ok-msg">✅ User created. Share PIN <b>' + pin + '</b> with them securely.</div>';
+    setTimeout(renderUsers, 2000);
+  } catch(e) {
+    msgEl.innerHTML = '<div class="err-msg">Error: ' + e.message + '</div>';
+  }
+}
+
+async function toggleUser(id, active) {
+  await sbPatch('ifx_users', 'id=eq.' + id, {active: !active});
+  await logAudit('USER_TOGGLE','user',id, active?'Deactivated':'Activated');
+  renderUsers();
+}
+
+/* ════════════════ PAGE: GROUPS (ADMIN) ════════════════ */
+async function renderGroups() {
+  var main = document.getElementById('mainContent');
+  try {
+    var groups = await sbGet('ifx_groups', 'select=*&order=company_code.asc');
+    main.innerHTML =
+      '<div class="page-hdr" style="display:flex;align-items:baseline;justify-content:space-between">' +
+        '<div><div class="page-title">Group Management</div><div class="page-sub">Internal groups with bank accounts per company</div></div>' +
+        '<button class="btn btn-primary btn-sm" onclick="showAddGroup()">+ Add Group</button>' +
+      '</div>' +
+      '<div id="groupFormWrap" style="display:none">' + renderAddGroupForm() + '</div>' +
+      '<div class="grid-2">' +
+      COMPANIES.map(function(co){
+        var coGroups = groups.filter(function(g){ return g.company_code===co.id; });
+        return '<div class="card"><div class="card-hdr"><div class="card-title">' + co.name + ' (' + co.id + ')</div>' +
+          '<span style="font-size:12px;color:var(--text3)">' + coGroups.length + ' groups</span></div>' +
+          (coGroups.length ?
+            '<table><thead><tr><th>Group Name</th><th>Bank Account</th><th>Status</th></tr></thead><tbody>' +
+            coGroups.map(function(g){
+              return '<tr><td style="font-weight:500">' + g.name + '</td>' +
+                '<td class="dim" style="font-family:IBM Plex Mono,monospace;font-size:11px">' + (g.bank_account||'—') + '</td>' +
+                '<td><span class="badge ' + (g.active?'matched':'expired') + '">' + (g.active?'Active':'Inactive') + '</span></td></tr>';
+            }).join('') + '</tbody></table>'
+          : '<div class="empty" style="padding:20px"><div class="empty-title">No groups yet</div></div>') +
+        '</div>';
+      }).join('') +
+      '</div>';
+  } catch(e) {
+    main.innerHTML = '<div class="alert danger">Error: ' + e.message + '</div>';
+  }
+}
+
+function renderAddGroupForm() {
+  return '<div class="card" style="margin-bottom:14px">' +
+    '<div class="card-hdr"><div class="card-title">➕ Add Group</div><button class="btn btn-ghost btn-sm" onclick="document.getElementById(\'groupFormWrap\').style.display=\'none\'">Cancel</button></div>' +
+    '<div id="grpMsg"></div>' +
+    '<div class="grid-2">' +
+      '<div class="fg"><label class="flbl">Company</label><select class="fsel" id="grpCompany">' +
+        COMPANIES.map(function(c){ return '<option value="' + c.id + '">' + c.name + '</option>'; }).join('') +
+      '</select></div>' +
+      '<div class="fg"><label class="flbl">Group Name</label><input class="fi" type="text" id="grpName" placeholder="e.g. Finance - Dubai"></div>' +
+      '<div class="fg"><label class="flbl">Bank Account No.</label><input class="fi" type="text" id="grpBank" placeholder="e.g. AE12 CITI 0001234567"></div>' +
+    '</div>' +
+    '<button class="btn btn-success" onclick="createGroup()">Create Group</button>' +
+  '</div>';
+}
+
+function showAddGroup() { document.getElementById('groupFormWrap').style.display='block'; document.getElementById('groupFormWrap').scrollIntoView({behavior:'smooth'}); }
+
+async function createGroup() {
+  var co   = document.getElementById('grpCompany').value;
+  var name = document.getElementById('grpName').value.trim();
+  var bank = document.getElementById('grpBank').value.trim();
+  var msgEl= document.getElementById('grpMsg');
+  if (!co||!name) { msgEl.innerHTML='<div class="err-msg">Company and Group Name required</div>'; return; }
+  try {
+    await sbPost('ifx_groups', {company_code:co, name:name, bank_account:bank, active:true, created_at:new Date().toISOString()});
+    await logAudit('GROUP_CREATED','group',name,'Group '+name+' for '+co);
+    msgEl.innerHTML = '<div class="ok-msg">✅ Group created</div>';
+    setTimeout(renderGroups, 1500);
+  } catch(e) { msgEl.innerHTML='<div class="err-msg">Error: '+e.message+'</div>'; }
+}
+
+/* ════════════════ PAGE: AUDIT TRAIL ════════════════ */
+async function renderAudit() {
+  var main = document.getElementById('mainContent');
+  try {
+    var logs = await sbGet('ifx_audit', 'select=*&order=timestamp.desc&limit=200');
+    main.innerHTML =
+      '<div class="page-hdr"><div class="page-title">Audit Trail</div>' +
+        '<div class="page-sub">Complete timestamped log of all actions</div>' +
+      '</div>' +
+      '<div class="card">' +
+        (logs.length ?
+          '<div class="tbl-wrap"><table>' +
+            '<thead><tr><th>Timestamp</th><th>User</th><th>Action</th><th>Entity</th><th>Details</th></tr></thead><tbody>' +
+            logs.map(function(l){
+              var actionColor = {LOGIN:'var(--accent)',LOGOUT:'var(--text3)',
+                MATCH_CREATED:'var(--green)',SETTLE:'var(--teal)',
+                REQUEST_SUBMITTED:'var(--purple)',RATE_SET:'var(--amber)',
+                USER_CREATED:'var(--accent)',GROUP_CREATED:'var(--accent)'};
+              return '<tr>' +
+                '<td class="dim" style="white-space:nowrap;font-size:11px">' + fmtTime(l.timestamp) + '</td>' +
+                '<td style="font-weight:600;font-size:12px">' + (l.user_name||'—') + '</td>' +
+                '<td><span style="font-size:11px;font-weight:700;color:' + (actionColor[l.action]||'var(--text2)') + '">' + l.action + '</span></td>' +
+                '<td class="dim" style="font-size:11px">' + (l.entity_type||'') + ' ' + (l.entity_id||'') + '</td>' +
+                '<td class="dim" style="font-size:11px;max-width:300px">' + (l.details||'') + '</td>' +
+              '</tr>';
+            }).join('') +
+          '</tbody></table></div>'
+        : '<div class="empty"><div class="empty-icon">📜</div><div class="empty-title">No audit logs yet</div></div>') +
+      '</div>';
+  } catch(e) {
+    main.innerHTML = '<div class="alert danger">Error: ' + e.message + '</div>';
+  }
+}
+
+/* ════════════════ TRIGGER MATCH ════════════════ */
+async function triggerMatch() {
+  requireAdminPwd(async function(){
+    var btn = event.target;
+    btn.textContent = '⏳ Matching...'; btn.disabled = true;
+    await runAutoMatch();
+    btn.textContent = '✅ Done'; btn.disabled = false;
+    setTimeout(function(){ showPage('matching'); }, 800);
+  });
+}
+
+/* ════════════════ COUNTDOWN TIMERS ════════════════ */
+function startCountdowns() {
+  Object.values(countdownIntervals).forEach(clearInterval);
+  countdownIntervals = {};
+  document.querySelectorAll('[id^="cd_"]').forEach(function(el) {
+    var matchId  = el.id.replace('cd_', '');
+    var deadline = el.getAttribute('data-deadline') || el.textContent;
+    // Re-query the element in interval
+    countdownIntervals[matchId] = setInterval(function(){
+      var el2 = document.getElementById('cd_' + matchId);
+      if (!el2) { clearInterval(countdownIntervals[matchId]); return; }
+      el2.textContent = formatCountdown(el2.getAttribute('data-deadline') || deadline);
+      el2.className = 'countdown ' + countdownClass(el2.getAttribute('data-deadline') || deadline);
+    }, 1000);
+  });
+  // Store deadlines as data attributes
+  document.querySelectorAll('[id^="cd_"]').forEach(function(el){
+    // Find deadline from matches data - for simplicity, parse from display
+  });
+}
+
+function formatCountdown(deadline) {
+  if (!deadline) return '—';
+  var diff = new Date(deadline) - new Date();
+  if (diff <= 0) return 'EXPIRED';
+  var h = Math.floor(diff/3600000);
+  var m = Math.floor((diff%3600000)/60000);
+  var s = Math.floor((diff%60000)/1000);
+  return (h>0 ? h+'h ' : '') + (m>0||h>0 ? String(m).padStart(2,'0')+'m ' : '') + String(s).padStart(2,'0')+'s';
+}
+
+function countdownClass(deadline) {
+  if (!deadline) return 'ok';
+  var diff = new Date(deadline) - new Date();
+  if (diff <= 0) return 'urgent';
+  if (diff < 600000) return 'urgent'; // < 10 min
+  if (diff < 1800000) return 'warn';  // < 30 min
+  return 'ok';
+}
+
+/* ════════════════ HELPERS ════════════════ */
+function kpi(label, val, sub, color) {
+  return '<div class="kpi ' + color + '"><div class="kpi-label">' + label + '</div>' +
+    '<div class="kpi-val ' + color + '">' + val + '</div>' +
+    '<div class="kpi-sub">' + sub + '</div></div>';
+}
+
+function fmtAmt(n) {
+  if (!n && n !== 0) return '—';
+  return Number(n).toLocaleString('en-US', {minimumFractionDigits:0, maximumFractionDigits:0});
+}
+
+function fmtTime(iso) {
+  if (!iso) return '—';
+  try { return new Date(iso).toLocaleString('en-GB', {day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}); }
+  catch(e){ return iso; }
+}
+
+function fmtDate(iso) {
+  if (!iso) return '—';
+  try { return new Date(iso).toLocaleDateString('en-GB', {day:'2-digit',month:'short',year:'numeric'}); }
+  catch(e){ return iso; }
+}
+
+function timeAgo(iso) {
+  if (!iso) return '—';
+  var diff = Date.now() - new Date(iso);
+  if (diff < 60000) return Math.floor(diff/1000)+'s ago';
+  if (diff < 3600000) return Math.floor(diff/60000)+'m ago';
+  return Math.floor(diff/3600000)+'h ago';
+}
+
+/* ════════════════ AUTO-REFRESH ════════════════ */
+setInterval(function(){
+  if (currentUser && (currentPage==='dashboard'||currentPage==='settlements'||currentPage==='matching')) {
+    showPage(currentPage);
+  }
+}, 60000);
+
+/* ════════════════ SSO AUTO-LOGIN ════════════════ */
+(async function initWithSso() {
+  var session = readSsoSession();
+  if (session) {
+    var u = session.user;
+    // Check role has access to this module
+    if (MODULE_ROLES.indexOf(u.role) < 0) {
+      alert('Your role (' + u.role + ') does not have access to this module.');
+      window.location.href = 'index.html';
+      return;
+    }
+    // Try to load the full user record from DB
+    try {
+      var rows = await sbGet('ifx_users', 'select=*&id=eq.' + u.id + '&active=eq.true');
+      if (rows && rows.length) {
+        currentUser = rows[0];
+      } else {
+        // Use SSO user data directly if DB lookup fails
+        currentUser = {id:u.id, name:u.name, email:u.email, role:u.role, company_code:u.companyCode||'', active:true};
+      }
+    } catch(e) {
+      currentUser = {id:u.id, name:u.name, email:u.email, role:u.role, company_code:u.companyCode||'', active:true};
+    }
+    // Hide login, show app
+    document.getElementById('loginPage').style.display = 'none';
+    startApp();
+  }
+  // else: login page stays visible (already shown by default)
+})();
+
+
+/* ════════════════════════════════════════════════
+   FX DEAL ENTRY — embedded in Matching Module
+════════════════════════════════════════════════ */
+
+var FX_PAIR_CFG = {
+  'EUR/USD': {ccy1:'EUR',ccy2:'USD',label:'EUR / USD',pipMult:10000,decimals:5,min:.5,max:3,
+    thresholds:[5,7,8,9],verdicts:['Favourable','Satisfactory','Concerning','High Margin','Red Flag']},
+  'USD/ZAR': {ccy1:'USD',ccy2:'ZAR',label:'USD / ZAR',pipMult:100,decimals:4,min:10,max:25,
+    thresholds:[20,25,30,35],verdicts:['Favourable','Satisfactory','Concerning','High Margin','Red Flag']}
+};
+var fxLiveRates = {'EUR/USD':null,'USD/ZAR':null};
+var fxCurrentPair = 'EUR/USD';
+var fxLiveRate    = null;
+var fxCalcResult  = null;
+
+/* ── Rate Fetching ── */
+function fxXhr(url, ms) {
+  return new Promise(function(res,rej){
+    var x=new XMLHttpRequest(); x.timeout=ms||7000; x.open('GET',url);
+    x.setRequestHeader('Accept','application/json');
+    x.onload=function(){ if(x.status<300){try{res(JSON.parse(x.responseText));}catch(e){rej(e);}}else{rej(new Error('HTTP '+x.status));} };
+    x.onerror=function(){rej(new Error('Network'));};
+    x.ontimeout=function(){rej(new Error('Timeout'));};
+    x.send();
+  });
+}
+
+async function fxFetchRates() {
+  var key='cc7738b264674098a332fbf66ef8adad';
+  var sources=[
+    function(){ return Promise.all([
+      fxXhr('https://api.twelvedata.com/price?symbol=EUR%2FUSD&apikey='+key,7000),
+      fxXhr('https://api.twelvedata.com/price?symbol=USD%2FZAR&apikey='+key,7000)
+    ]).then(function(r){
+      if(!r[0]||r[0].code||!r[0].price) throw new Error('TwelveData no price');
+      return {eu:parseFloat(r[0].price),za:r[1]&&!r[1].code?parseFloat(r[1].price):null,src:'Twelve Data'};
+    });},
+    function(){ return Promise.all([
+      fxXhr('https://query1.finance.yahoo.com/v8/finance/chart/EURUSD%3DX?range=1d&interval=1m',7000),
+      fxXhr('https://query1.finance.yahoo.com/v8/finance/chart/USDZAR%3DX?range=1d&interval=1m',7000)
+    ]).then(function(r){
+      var eu=r[0]&&r[0].chart&&r[0].chart.result?r[0].chart.result[0].meta.regularMarketPrice:null;
+      var za=r[1]&&r[1].chart&&r[1].chart.result?r[1].chart.result[0].meta.regularMarketPrice:null;
+      if(!eu) throw new Error('Yahoo no price');
+      return {eu:parseFloat(eu),za:za?parseFloat(za):null,src:'Yahoo Finance'};
+    });},
+    function(){ return fxXhr('https://open.er-api.com/v6/latest/EUR',7000).then(function(d){
+      if(!d||d.result!=='success') throw new Error('OpenER fail');
+      var eu=d.rates.USD; var za=d.rates.ZAR;
+      return {eu:parseFloat(eu),za:za&&eu?parseFloat((za/eu).toFixed(4)):null,src:'Open ER API'};
+    });}
+  ];
+  for(var i=0;i<sources.length;i++){
+    try{
+      var r=await sources[i]();
+      if(r&&r.eu&&r.eu>.5&&r.eu<3){
+        fxLiveRates['EUR/USD']=r.eu;
+        if(r.za&&r.za>10) fxLiveRates['USD/ZAR']=r.za;
+        return r;
+      }
+    }catch(e){ console.warn('FX source '+i+' failed:',e.message); }
+  }
+  return null;
+}
+
+async function fxRefreshRate(pair) {
+  var el=document.getElementById('fxRateCard');
+  if(el) el.style.opacity='.5';
+  var r=await fxFetchRates();
+  var rate=fxLiveRates[pair||fxCurrentPair];
+  fxLiveRate=rate;
+  if(el){
+    el.style.opacity='1';
+    document.getElementById('fxRateVal').textContent=rate?rate.toFixed(FX_PAIR_CFG[fxCurrentPair].decimals):'—';
+    document.getElementById('fxRateSrc').textContent=r?r.src:'All sources failed';
+  }
+  fxCalculate();
+}
+
+/* ── Pip Calculation ── */
+function fxGetPipCls(pips, pair) {
+  var t=FX_PAIR_CFG[pair||fxCurrentPair].thresholds;
+  if(pips<t[0]) return 'stellar';
+  if(pips<=t[1]) return 'ok';
+  if(pips<=t[2]) return 'caution';
+  if(pips<=t[3]) return 'warn';
+  return 'bad';
+}
+
+function fxCalculate() {
+  var cfg=FX_PAIR_CFG[fxCurrentPair];
+  var bankRateEl=document.getElementById('fxBankRate');
+  var amtEl=document.getElementById('fxAmount');
+  var typeEl=document.getElementById('fxDealType');
+  var confirmBtn=document.getElementById('fxConfirmBtn');
+  if(!bankRateEl||!amtEl) return;
+  var bankRate=parseFloat(bankRateEl.value);
+  var amount=parseFloat(amtEl.value);
+  var spot=fxLiveRate;
+  if(isNaN(bankRate)||bankRate<cfg.min||bankRate>cfg.max||isNaN(amount)||amount<=0||!spot){
+    if(confirmBtn) confirmBtn.disabled=true;
+    document.getElementById('fxPipResult').style.display='none';
+    document.getElementById('fxAmtResult').style.display='none';
+    return;
+  }
+  var pips=Math.abs(bankRate-spot)*cfg.pipMult;
+  var pipCls=fxGetPipCls(pips, fxCurrentPair);
+  var verdicts={stellar:'Favourable',ok:'Satisfactory',caution:'Concerning',warn:'High Margin',bad:'Red Flag'};
+  var type=typeEl?typeEl.value:'SELL_CCY1';
+  var isSellCcy1=(type==='SELL_CCY1');
+  var amtCcy1=isSellCcy1?amount:amount/bankRate;
+  var amtCcy2=isSellCcy1?amount*bankRate:amount;
+
+  // Update pip gauge
+  var maxPip=FX_PAIR_CFG[fxCurrentPair].thresholds[3]*1.3;
+  var pct=Math.min(pips/maxPip,1)*100;
+  var markerEl=document.getElementById('fxGaugeMarker');
+  if(markerEl) markerEl.style.left=pct+'%';
+
+  // Pip result
+  var prEl=document.getElementById('fxPipResult');
+  if(prEl){
+    prEl.className='pip-result '+pipCls;
+    prEl.style.display='flex';
+    prEl.innerHTML='<div><div class="pip-pips '+pipCls+'">'+pips.toFixed(2)+' pips</div>' +
+      '<div style="font-size:11px;color:var(--text3)">'+verdicts[pipCls]+' &middot; ' +
+      (bankRate>spot?'Bank above spot':'Bank below spot')+'</div></div>' +
+      '<div style="text-align:right;font-size:12px;font-weight:600">Marginal Diff<br>' +
+      '<span style="font-family:IBM Plex Mono,monospace">'+Math.abs(bankRate-spot).toFixed(cfg.decimals)+'</span></div>';
+  }
+
+  // Amount result
+  var arEl=document.getElementById('fxAmtResult');
+  if(arEl){
+    arEl.style.display='block';
+    arEl.innerHTML=
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">' +
+      '<div class="amount-result"><div class="ar-label">'+cfg.ccy1+' Amount</div>' +
+        '<div class="ar-val">'+fmtAmt(Math.round(amtCcy1))+'</div>' +
+        '<div class="ar-words">'+fxNumWords(Math.round(amtCcy1),cfg.ccy1)+'</div></div>' +
+      '<div class="amount-result"><div class="ar-label">'+cfg.ccy2+' Amount</div>' +
+        '<div class="ar-val">'+fmtAmt(amtCcy2.toFixed(2))+'</div>' +
+        '<div class="ar-words">'+fxNumWords(Math.round(amtCcy2),cfg.ccy2)+'</div></div>' +
+      '</div>';
+  }
+
+  // Bank benchmark
+  var bench=document.getElementById('fxBenchNote');
+  var bankSel=document.getElementById('fxBank');
+  if(bench&&bankSel&&bankSel.value) {
+    var bColors={stellar:'var(--green)',ok:'var(--accent)',caution:'var(--orange)',warn:'var(--amber)',bad:'var(--red)'};
+    var bBg={stellar:'var(--green-bg)',ok:'var(--accent-bg)',caution:'#fff4ed',warn:'var(--amber-bg)',bad:'var(--red-bg)'};
+    var bBd={stellar:'var(--green-bd)',ok:'var(--accent-bd)',caution:'#f9c9a0',warn:'var(--amber-bd)',bad:'var(--red-bd)'};
+    bench.style.display='block';
+    bench.style.color=bColors[pipCls];
+    bench.style.background=bBg[pipCls];
+    bench.style.borderColor=bBd[pipCls];
+    bench.textContent='Bank Benchmark: '+verdicts[pipCls]+' — '+pips.toFixed(2)+' pips with '+bankSel.options[bankSel.selectedIndex].text;
+  } else if(bench) bench.style.display='none';
+
+  fxCalcResult={bankRate,amount,amtCcy1,amtCcy2,pips,pipCls,spot,cfg};
+  if(confirmBtn) confirmBtn.disabled=false;
+}
+
+/* ── Number to Words (simplified) ── */
+function fxNumWords(n, ccy) {
+  if(!n||isNaN(n)) return '';
+  var ones=['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
+  var tens=['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+  function h(n){
+    if(n===0)return'';
+    if(n<20)return ones[n]+' ';
+    if(n<100)return tens[Math.floor(n/10)]+' '+(n%10?ones[n%10]+' ':'');
+    return ones[Math.floor(n/100)]+' Hundred '+(n%100?h(n%100):'');
+  }
+  var result='';
+  if(n>=1000000) result+=h(Math.floor(n/1000000))+'Million ';
+  if(n%1000000>=1000) result+=h(Math.floor((n%1000000)/1000))+'Thousand ';
+  result+=h(n%1000);
+  return '('+result.trim()+' '+ccy+')';
+}
+
+/* ── Confirm FX Deal ── */
+async function confirmFxDeal() {
+  if(!fxCalcResult) return;
+  if(!fxLiveRate) { alert('No live rate — click the rate card to fetch first'); return; }
+  var c=fxCalcResult, cfg=c.cfg;
+  var dealNo   = document.getElementById('fxDealNo').value||('D'+Date.now());
+  var valueDate= document.getElementById('fxValueDate').value;
+  var givenBy  = document.getElementById('fxGivenBy').value||'—';
+  var bankEl   = document.getElementById('fxBank');
+  var bankId   = bankEl?bankEl.value:'';
+  var bankName = bankEl&&bankEl.selectedIndex>0?bankEl.options[bankEl.selectedIndex].text:'—';
+  var typeEl   = document.getElementById('fxDealType');
+  var typeLabel= typeEl?typeEl.options[typeEl.selectedIndex].text:'—';
+  var today    = new Date().toLocaleDateString('en-GB');
+  var timeStr  = new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+
+  var record = {
+    deal_date:deal_date=today, deal_time:timeStr,
+    pair:fxCurrentPair, type:typeEl?typeEl.value:'SELL_CCY1', type_label:typeLabel,
+    deal_no:dealNo, value_date:valueDate||today,
+    given_by:givenBy, bank:bankId, bank_name:bankName,
+    bank_rate:c.bankRate.toFixed(cfg.decimals),
+    spot_rate:c.spot.toFixed(cfg.decimals),
+    ccy1:cfg.ccy1, ccy2:cfg.ccy2,
+    amt_ccy1:Math.round(c.amtCcy1),
+    amt_ccy2:parseFloat(c.amtCcy2.toFixed(2)),
+    pips:c.pips.toFixed(2), pip_verdict:c.pipCls,
+    marginal_diff:Math.abs(c.bankRate-c.spot).toFixed(cfg.decimals),
+    amount_in_words:fxNumWords(Math.round(c.amtCcy2),cfg.ccy2).replace(/[()]/g,''),
+    created_at:new Date().toISOString(),
+    created_by:currentUser?currentUser.name:''
+  };
+
+  try {
+    await sbPost('fx_deals', record);
+    await logAudit('FX_DEAL_CONFIRMED','fx_deal',dealNo,typeLabel+' '+fmtAmt(c.amtCcy1)+' '+cfg.ccy1+' @ '+c.bankRate.toFixed(cfg.decimals));
+
+    // Build email
+    var emailHtml=fxBuildEmail({
+      typeLabel:typeLabel,pairLabel:cfg.label,ccy1:cfg.ccy1,ccy2:cfg.ccy2,
+      amtCcy1:fmtAmt(Math.round(c.amtCcy1)),amtCcy2:fmtAmt(c.amtCcy2.toFixed(2)),
+      amtCcy1Num:c.amtCcy1,amtCcy2Num:c.amtCcy2,
+      bankRate:c.bankRate.toFixed(cfg.decimals),
+      spotRate:c.spot.toFixed(cfg.decimals),refLbl:c.bankRate>c.spot?'Bid':'Ask',
+      margDiff:Math.abs(c.bankRate-c.spot).toFixed(cfg.decimals),
+      pipsVal:c.pips.toFixed(2),pipCls:c.pipCls,
+      dealNo:dealNo,fmtDate:valueDate||today,
+      givenBy:givenBy,bankName:bankName
+    });
+
+    // Show email panel
+    var ep=document.getElementById('fxEmailPanel');
+    if(ep){
+      ep.style.display='block';
+      document.getElementById('fxEmailSubject').textContent='Forex Deal Confirmation – '+typeLabel+' – '+(valueDate||today)+' – Deal No. '+dealNo;
+      document.getElementById('fxEmailBody').innerHTML=emailHtml;
+      ep.scrollIntoView({behavior:'smooth'});
+    }
+    document.getElementById('fxConfirmBtn').disabled=true;
+    document.getElementById('fxConfirmBtn').textContent='✓ Deal Confirmed';
+    document.getElementById('fxConfirmBtn').style.background='var(--green)';
+  } catch(e) { alert('Error saving deal: '+e.message); }
+}
+
+/* ── Email Builder (compact, no dark theme) ── */
+function fxBuildEmail(p) {
+  var isSell=p.typeLabel.toLowerCase().indexOf('sell')>=0;
+  var tc=isSell?'#b91c1c':'#15803d';
+  var vm={stellar:{bg:'#f0fdf4',bd:'#86efac',txt:'#15803d',icon:'✅',lbl:'Favourable'},
+    ok:{bg:'#eff6ff',bd:'#bfdbfe',txt:'#1d4ed8',icon:'✅',lbl:'Satisfactory'},
+    caution:{bg:'#fff7ed',bd:'#fed7aa',txt:'#c2410c',icon:'⚠',lbl:'Concerning'},
+    warn:{bg:'#fffbeb',bd:'#fde68a',txt:'#92400e',icon:'⚠',lbl:'High Margin'},
+    bad:{bg:'#fef2f2',bd:'#fca5a5',txt:'#b91c1c',icon:'✗',lbl:'Red Flag'}};
+  var v=vm[p.pipCls]||vm.ok;
+  function tr(l,val){return '<tr><td style="padding:5px 8px;font-size:12px;font-weight:600;color:#4b5563;background:#f9fafb;border:1px solid #e5e7eb;white-space:nowrap;width:36%">'+l+'</td><td style="padding:5px 8px;font-size:12px;color:#111827;border:1px solid #e5e7eb;font-family:Consolas,monospace">'+val+'</td></tr>';}
+  function trA(l,d,ccy){var w=fxNumWords(Math.round(parseFloat(String(d).replace(/,/g,''))),ccy);return '<tr><td style="padding:5px 8px;font-size:12px;font-weight:600;color:#4b5563;background:#f9fafb;border:1px solid #e5e7eb;white-space:nowrap;width:36%">'+l+'</td><td style="padding:5px 8px;border:1px solid #e5e7eb"><span style="font-size:13px;font-weight:700;color:#111827;font-family:Consolas,monospace">'+d+'</span>'+(w?'<br><span style="font-size:10px;color:#6366f1;font-style:italic;font-family:Arial">'+w+'</span>':'')+'</td></tr>';}
+  return '<table width="500" cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,sans-serif;font-size:13px;color:#111827;max-width:500px;width:500px;table-layout:fixed">'
+  +'<tr><td><p style="font-size:14px;font-weight:700;margin:0 0 3px">Dear Team</p><p style="color:#6b7280;font-size:12px;margin:0 0 10px">Please find below the Forex Deal details for your reference:</p>'
+  +'<table width="100%" cellpadding="0" cellspacing="0" style="border-bottom:2px solid '+tc+';margin-bottom:8px"><tr><td style="padding:4px 0;font-size:13px;font-weight:700;color:'+tc+'">'+(isSell?'▼':'▲')+' '+p.typeLabel+'</td><td style="text-align:right;font-size:12px;font-weight:600;color:#374151">Deal No. <span style="font-family:Consolas;color:#111827">'+p.dealNo+'</span></td></tr></table>'
+  +'<p style="font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.8px;margin:0 0 4px">Deal Details</p>'
+  +'<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-bottom:8px">'
+  +tr('Deal Rate',p.bankRate)+trA(p.ccy1+' Amount',p.amtCcy1,p.ccy1)+trA(p.ccy2+' Amount',p.amtCcy2,p.ccy2)
+  +tr('Value Date',p.fmtDate)+tr('Bank',p.bankName)+tr('Given By',p.givenBy)+'</table>'
+  +'<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:6px"><tr><td style="padding:5px 8px;background:'+v.bg+';border:1px solid '+v.bd+';border-radius:3px;font-size:12px;color:'+v.txt+'">'+v.icon+' <b>'+v.lbl+'</b> <span style="font-weight:400;font-size:11px">( As per GRF Treasury Policy Assessment )</span></td></tr></table>'
+  +'<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:10px"><tr><td style="padding:5px 8px;background:#fffbeb;border:1px solid #fde68a;text-align:center;font-size:12px;font-weight:700;color:#92400e">⏰ Use This Deal After 20 Minutes</td></tr></table>'
+  +'<table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #e5e7eb"><tr><td style="padding-top:6px;font-size:11px;color:#9ca3af">GRF Treasury FX System<br>Generated '+p.fmtDate+'</td><td style="text-align:right;padding-top:6px"><span style="font-size:12px;font-weight:600;color:#374151">Regards,<br><span style="color:#1d4ed8;font-weight:700">Eldhose Scaria</span></span></td></tr></table>'
+  +'</td></tr></table>';
+}
+
+/* ── Outlook Push ── */
+function fxPushOutlook() {
+  var subj=document.getElementById('fxEmailSubject').textContent;
+  var bodyEl=document.getElementById('fxEmailBody');
+  if (!bodyEl) return;
+  var bodyText = bodyEl.innerText || bodyEl.textContent || '';
+  // Copy HTML to clipboard
+  var el=document.createElement('div'); el.setAttribute('contenteditable','true');
+  el.style.cssText='position:fixed;left:-9999px;top:0;opacity:0';
+  el.innerHTML=bodyEl.innerHTML; document.body.appendChild(el); el.focus();
+  var range=document.createRange(); range.selectNodeContents(el);
+  window.getSelection().removeAllRanges(); window.getSelection().addRange(range);
+  document.execCommand('copy');
+  window.getSelection().removeAllRanges(); document.body.removeChild(el);
+  // Open Outlook with subject and plain-text body
+  window.location.href='mailto:?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(bodyText);
+  alert('Outlook is opening.\n\n1. If the body is empty, paste the copied email content manually.');
+}
+
+/* ── Render Deal Entry Page ── */
+async function renderDealEntry() {
+  var main=document.getElementById('mainContent');
+  fxCalcResult=null; fxLiveRate=null;
+
+  // Load banks and given-by from Supabase
+  var banks=[],givenBys=[];
+  try { banks=await sbGet('bank_master','select=*&active=eq.true&order=bank_id'); } catch(e){}
+  try { givenBys=await sbGet('given_by_master','select=*&active=eq.true&order=name'); } catch(e){}
+
+  main.innerHTML=
+  '<div class="page-hdr"><div class="page-title">FX Deal Entry</div>' +
+    '<div class="page-sub">Negotiate and confirm interbank forex deals</div></div>' +
+
+  // Pair selector
+  '<div class="pair-tab-row">' +
+    '<button class="pair-tab active" id="ptEURUSD" onclick="fxSetPair(\'EUR/USD\')">EUR / USD</button>' +
+    '<button class="pair-tab" id="ptUSDZAR" onclick="fxSetPair(\'USD/ZAR\')">USD / ZAR</button>' +
+  '</div>' +
+
+  // Rate card (click to refresh)
+  '<div class="rate-card" id="fxRateCard" onclick="fxRefreshRate()" title="Click to fetch live rate">' +
+    '<div><div class="rc-label" id="fxRatePairLabel">EUR / USD — Market Rate</div>' +
+      '<div class="rc-val" id="fxRateVal">—</div>' +
+      '<div class="rc-src" id="fxRateSrc">Click to fetch live rate</div>' +
+    '</div>' +
+    '<div style="text-align:right">' +
+      '<div class="rc-dir" id="fxRateDir"></div>' +
+      '<div style="font-size:11px;color:rgba(255,255,255,.3);margin-top:6px">Click to refresh</div>' +
+    '</div>' +
+  '</div>' +
+
+  '<div class="grid-2">' +
+  // ─ Left: Deal form
+  '<div class="card">' +
+    '<div class="card-hdr"><div class="card-title">Deal Form</div></div>' +
+
+    '<div class="fg"><label class="flbl">Deal Type</label>' +
+      '<select class="fsel" id="fxDealType" onchange="fxCalculate()">' +
+        '<option value="SELL_CCY1">SELL EUR / BUY USD</option>' +
+        '<option value="BUY_CCY1">BUY EUR / SELL USD</option>' +
+      '</select>' +
+    '</div>' +
+
+    '<div class="fg"><label class="flbl">Bank Deal Rate</label>' +
+      '<input class="fi" type="number" id="fxBankRate" step="0.00001" placeholder="e.g. 1.17726" oninput="fxCalculate()">' +
+    '</div>' +
+
+    '<div class="fg"><label class="flbl" id="fxAmtLabel">Amount (EUR)</label>' +
+      '<input class="fi" type="number" id="fxAmount" placeholder="e.g. 500000" oninput="fxCalculate()">' +
+    '</div>' +
+
+    '<div class="pip-gauge"><div class="pip-gauge-marker" id="fxGaugeMarker" style="left:0%"></div></div>' +
+    '<div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text4);margin-bottom:8px">' +
+      '<span>0 — Favourable</span><span>Mid</span><span>Red Flag ▶</span>' +
+    '</div>' +
+
+    '<div id="fxPipResult" class="pip-result" style="display:none"></div>' +
+    '<div id="fxAmtResult" style="display:none"></div>' +
+    '<div id="fxBenchNote" class="bench-note" style="display:none"></div>' +
+
+    '<div class="fg"><label class="flbl">Deal No.</label>' +
+      '<input class="fi" type="text" id="fxDealNo" placeholder="e.g. 307785">' +
+    '</div>' +
+    '<div class="fg"><label class="flbl">Value Date</label>' +
+      '<input class="fi" type="date" id="fxValueDate">' +
+    '</div>' +
+
+    '<button class="deal-confirm-btn" id="fxConfirmBtn" onclick="confirmFxDeal()" disabled>Confirm Deal &amp; Generate Email</button>' +
+  '</div>' +
+
+  // ─ Right: Bank + Given By + Email
+  '<div>' +
+    '<div class="card" style="margin-bottom:12px">' +
+      '<div class="card-hdr"><div class="card-title">Counterpart</div></div>' +
+      '<div class="fg"><label class="flbl">Bank</label>' +
+        '<select class="fsel" id="fxBank" onchange="fxBankAutoGivenBy();fxCalculate()">' +
+          '<option value="">— Select Bank —</option>' +
+          banks.map(function(b){ return '<option value="'+b.bank_id+'">'+b.bank_name+'</option>'; }).join('') +
+        '</select>' +
+      '</div>' +
+      '<div class="fg"><label class="flbl">Given By</label>' +
+        '<select class="fsel" id="fxGivenBy" onchange="fxGivenByAutoBank()">' +
+          '<option value="">— Select —</option>' +
+          givenBys.map(function(g){ return '<option value="'+g.name+'" data-bank="'+(g.bank_id||'')+'">'+g.name+'</option>'; }).join('') +
+        '</select>' +
+      '</div>' +
+    '</div>' +
+
+    // Email panel (hidden until confirmed)
+    '<div id="fxEmailPanel" style="display:none">' +
+      '<div class="card">' +
+        '<div class="card-hdr"><div class="card-title">📧 Deal Email</div>' +
+          '<div style="display:flex;gap:6px">' +
+            '<button class="btn btn-primary btn-sm" style="background:#0078d4" onclick="fxPushOutlook()">📩 Send to Outlook</button>' +
+            '<button class="btn btn-ghost btn-sm" onclick="fxCopyHtml(this)">📋 Copy HTML</button>' +
+          '</div>' +
+        '</div>' +
+        '<div style="font-size:12px;font-weight:600;color:var(--text3);margin-bottom:6px" id="fxEmailSubject"></div>' +
+        '<div class="email-preview-wrap" id="fxEmailBody"></div>' +
+      '</div>' +
+    '</div>' +
+  '</div>' + // right col
+  '</div>'; // grid-2
+
+  // Auto-fetch rate
+  fxRefreshRate(fxCurrentPair);
+
+  // Set today's date as default value date
+  var vd=document.getElementById('fxValueDate');
+  if(vd) vd.value=new Date().toISOString().slice(0,10);
+
+  // Store given-by data for auto-populate
+  window._fxGivenBys=givenBys;
+  window._fxBanks=banks;
+}
+
+function fxSetPair(pair) {
+  fxCurrentPair=pair;
+  document.getElementById('ptEURUSD').classList.toggle('active',pair==='EUR/USD');
+  document.getElementById('ptUSDZAR').classList.toggle('active',pair==='USD/ZAR');
+  var cfg=FX_PAIR_CFG[pair];
+  document.getElementById('fxRatePairLabel').textContent=cfg.label+' — Market Rate';
+  document.getElementById('fxRateVal').textContent=fxLiveRates[pair]?fxLiveRates[pair].toFixed(cfg.decimals):'—';
+  // Update deal type options
+  var dt=document.getElementById('fxDealType');
+  if(dt) {
+    dt.innerHTML=pair==='EUR/USD'
+      ? '<option value="SELL_CCY1">SELL EUR / BUY USD</option><option value="BUY_CCY1">BUY EUR / SELL USD</option>'
+      : '<option value="SELL_CCY1">SELL USD / BUY ZAR</option><option value="BUY_CCY1">BUY USD / SELL ZAR</option>';
+  }
+  var al=document.getElementById('fxAmtLabel');
+  if(al) al.textContent='Amount ('+cfg.ccy1+')';
+  fxLiveRate=fxLiveRates[pair]||null;
+  fxCalculate();
+}
+
+function fxBankAutoGivenBy() {
+  var bankId=document.getElementById('fxBank').value;
+  var gbSel=document.getElementById('fxGivenBy');
+  if(!bankId||!gbSel) return;
+  var match=(window._fxGivenBys||[]).find(function(g){ return g.bank_id===bankId&&g.active; });
+  if(match) gbSel.value=match.name;
+}
+
+function fxGivenByAutoBank() {
+  var sel=document.getElementById('fxGivenBy');
+  var opt=sel.options[sel.selectedIndex];
+  var bankId=opt?opt.getAttribute('data-bank'):'';
+  var bankSel=document.getElementById('fxBank');
+  if(bankId&&bankSel) bankSel.value=bankId;
+  fxCalculate();
+}
+
+function fxCopyHtml(btn) {
+  var body=document.getElementById('fxEmailBody');
+  if (!body) return;
+  var el=document.createElement('div'); el.setAttribute('contenteditable','true');
+  el.style.cssText='position:fixed;left:-9999px;top:0;opacity:0';
+  el.innerHTML=body.innerHTML; document.body.appendChild(el); el.focus();
+  var range=document.createRange(); range.selectNodeContents(el);
+  window.getSelection().removeAllRanges(); window.getSelection().addRange(range);
+  document.execCommand('copy');
+  window.getSelection().removeAllRanges(); document.body.removeChild(el);
+  if (btn) {
+    btn.textContent='✓ Copied!';
+    setTimeout(function(){ btn.textContent='📋 Copy HTML'; }, 2000);
+  }
+}
+
+/* ── Render Deal History Page ── */
+async function renderDealHistory() {
+  var main=document.getElementById('mainContent');
+  main.innerHTML='<div class="empty"><div class="empty-icon">⏳</div></div>';
+  try {
+    var deals=await sbGet('fx_deals','select=*&order=created_at.desc&limit=200');
+    var totalVol=deals.reduce(function(s,d){ return s+(parseFloat(d.amt_ccy1)||0); },0);
+    var avgPip=deals.length?deals.reduce(function(s,d){ return s+(parseFloat(d.pips)||0); },0)/deals.length:0;
+
+    main.innerHTML=
+      '<div class="page-hdr"><div class="page-title">Deal History</div>' +
+        '<div class="page-sub">All confirmed FX deals</div></div>' +
+
+      '<div class="grid-4" style="margin-bottom:14px">' +
+        kpi('Total Deals', deals.length, 'confirmed deals', 'blue') +
+        kpi('Total Volume', fmtAmt(Math.round(totalVol)), 'CCY1 transacted', 'teal') +
+        kpi('Avg Pip Margin', avgPip.toFixed(2), 'average pips per deal', 'amber') +
+        kpi('Today', deals.filter(function(d){ return d.deal_date===new Date().toLocaleDateString('en-GB'); }).length, 'deals today', 'green') +
+      '</div>' +
+
+      (deals.length
+        ? '<div class="card"><div class="tbl-wrap"><table>' +
+            '<thead><tr><th>Date</th><th>Pair</th><th>Type</th><th>Bank</th>' +
+              '<th class="r">CCY1 Amt</th><th class="r">CCY2 Amt</th>' +
+              '<th class="r">Rate</th><th class="r">Pips</th>' +
+              '<th>Verdict</th><th>Given By</th><th>Deal No.</th></tr></thead><tbody>' +
+            deals.map(function(d){
+              var vc={stellar:'var(--green)',ok:'var(--accent)',caution:'var(--orange)',warn:'var(--amber)',bad:'var(--red)'};
+              var vl={stellar:'Favourable',ok:'Satisfactory',caution:'Concerning',warn:'High Margin',bad:'Red Flag'};
+              return '<tr>' +
+                '<td class="dim">'+d.deal_date+' '+d.deal_time+'</td>' +
+                '<td style="font-weight:600;font-size:12px">'+d.pair+'</td>' +
+                '<td><span class="badge '+(d.type&&d.type.indexOf('SELL')>=0?'sell':'buy')+'">'+d.type_label+'</span></td>' +
+                '<td class="dim">'+d.bank+'</td>' +
+                '<td class="r">'+fmtAmt(d.amt_ccy1)+'</td>' +
+                '<td class="r">'+fmtAmt(d.amt_ccy2)+'</td>' +
+                '<td class="r" style="font-family:IBM Plex Mono,monospace">'+d.bank_rate+'</td>' +
+                '<td class="r"><span style="color:'+(vc[d.pip_verdict]||'inherit')+';font-weight:700">'+d.pips+'</span></td>' +
+                '<td><span style="font-size:11px;font-weight:700;color:'+(vc[d.pip_verdict]||'inherit')+'">'+( vl[d.pip_verdict]||d.pip_verdict||'—')+'</span></td>' +
+                '<td class="dim">'+d.given_by+'</td>' +
+                '<td class="dim" style="font-family:IBM Plex Mono,monospace">'+d.deal_no+'</td>' +
+              '</tr>';
+            }).join('') +
+          '</tbody></table></div></div>'
+        : '<div class="empty"><div class="empty-icon">📈</div><div class="empty-title">No deals yet</div><div class="empty-sub">Confirm your first deal in the Deal Entry page</div></div>');
+  } catch(e) {
+    main.innerHTML='<div class="alert danger">Error loading deals: '+e.message+'</div>';
+  }
+}
+
+</script>
+</body>
+</html>
