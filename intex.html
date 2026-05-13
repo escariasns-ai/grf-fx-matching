@@ -203,6 +203,42 @@ tbody tr:hover{background:var(--surface2);}
 .saving-big{font-family:'IBM Plex Mono',monospace;font-size:28px;font-weight:600;color:var(--green);}
 .saving-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--green);}
 
+/* ── FX DEAL ENTRY CSS ── */
+.pair-tab-row{display:flex;gap:4px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:3px;margin-bottom:14px;}
+.pair-tab{padding:5px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--text3);transition:.15s;}
+.pair-tab.active{background:var(--accent);color:#fff;}
+.pair-tab:not(.active):hover{background:var(--surface);color:var(--text2);}
+.rate-card{background:var(--text);border-radius:var(--r);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;cursor:pointer;}
+.rate-card:hover{opacity:.92;}
+.rate-card .rc-val{font-family:'IBM Plex Mono',monospace;font-size:30px;font-weight:500;color:#fff;}
+.rate-card .rc-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.45);}
+.rate-card .rc-src{font-size:11px;color:rgba(255,255,255,.35);margin-top:2px;}
+.rate-card .rc-dir{font-size:12px;font-weight:600;}
+.rate-card .rc-dir.up{color:#4ade80;}
+.rate-card .rc-dir.down{color:#f87171;}
+.pip-gauge{height:10px;background:linear-gradient(to right,#16a34a 0%,#059669 30%,#ea580c 55%,#d97706 72%,#dc2626 88%,#991b1b 100%);border-radius:5px;position:relative;margin:10px 0 6px;}
+.pip-gauge-marker{width:14px;height:14px;border-radius:50%;background:#fff;border:2px solid #1a2535;position:absolute;top:50%;transform:translate(-50%,-50%);transition:left .3s;box-shadow:0 1px 4px rgba(0,0,0,.3);}
+.pip-result{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-radius:var(--rs);border:1.5px solid var(--border);margin-bottom:12px;}
+.pip-result.stellar{background:var(--green-bg);border-color:var(--green-bd);}
+.pip-result.ok{background:var(--accent-bg);border-color:var(--accent-bd);}
+.pip-result.caution{background:#fff4ed;border-color:#f9c9a0;}
+.pip-result.warn{background:var(--amber-bg);border-color:var(--amber-bd);}
+.pip-result.bad{background:var(--red-bg);border-color:var(--red-bd);}
+.pip-pips{font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:600;}
+.pip-pips.stellar{color:var(--green);}
+.pip-pips.ok{color:var(--accent);}
+.pip-pips.caution{color:var(--orange);}
+.pip-pips.warn{color:var(--amber);}
+.pip-pips.bad{color:var(--red);}
+.amount-result{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:10px 14px;margin-bottom:10px;}
+.amount-result .ar-label{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;}
+.amount-result .ar-val{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;color:var(--accent);}
+.amount-result .ar-words{font-size:10.5px;color:#6366f1;font-style:italic;margin-top:2px;}
+.email-preview-wrap{background:#f1f5f9;border:1px solid var(--border);border-radius:var(--rs);padding:16px;margin-top:10px;max-height:400px;overflow-y:auto;}
+.deal-confirm-btn{width:100%;padding:12px;border-radius:var(--rs);background:var(--accent);color:#fff;border:none;font-family:'IBM Plex Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:.15s;margin-top:6px;}
+.deal-confirm-btn:hover{background:#1d4ed8;}
+.deal-confirm-btn:disabled{background:var(--border2);cursor:not-allowed;color:var(--text3);}
+.bench-note{padding:8px 12px;border-radius:var(--rs);font-size:12px;font-weight:600;border:1.5px solid;margin-bottom:10px;}
 ::-webkit-scrollbar{width:5px;height:5px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
@@ -277,6 +313,15 @@ tbody tr:hover{background:var(--surface2);}
   </div>
   <div class="nav-item" onclick="showPage('myrequests')" data-page="myrequests">
     <span class="nav-icon">📋</span> My Requests
+  </div>
+
+  <div class="nav-divider"></div>
+  <div class="nav-section">FX Deals</div>
+  <div class="nav-item fx-deals-nav" onclick="showPage('dealentry')" data-page="dealentry">
+    <span class="nav-icon">💱</span> Deal Entry
+  </div>
+  <div class="nav-item fx-deals-nav" onclick="showPage('dealhistory')" data-page="dealhistory">
+    <span class="nav-icon">📈</span> Deal History
   </div>
 
   <div class="nav-divider"></div>
@@ -382,7 +427,7 @@ var MODULE_ROLES = ['super_admin','admin','user','fx_trader'];
 /* ── CONFIG ── */
 var SUPABASE_URL = 'https://yeqhplhlnfmgakcdayfk.supabase.co';
 var SUPABASE_KEY = 'sb_publishable_JXQkSHzlHv_Bm0IbNoMQ-Q_egZ4-N0j';
-var ADMIN_PWD    = '123456';
+var ADMIN_PWD    = '987';
 var SETTLE_MINS  = 60; // default settlement deadline in minutes
 
 /* ── STATE ── */
@@ -479,6 +524,9 @@ function startApp() {
   var isAdmin = (currentUser.role === 'admin' || currentUser.role === 'super_admin');
   document.querySelectorAll('.admin-only').forEach(function(el){ el.style.display = isAdmin ? '' : 'none'; });
   document.getElementById('adminNavSection').style.display = isAdmin ? '' : 'none';
+  // FX Deals visible to admin/super_admin/fx_trader roles
+  var canFxDeal = isAdmin || currentUser.role === 'fx_trader';
+  document.querySelectorAll('.fx-deals-nav').forEach(function(el){ el.style.display = canFxDeal ? '' : 'none'; });
   showPage('dashboard');
 }
 
@@ -499,7 +547,9 @@ function showPage(page) {
     rate:        renderRate,
     users:       renderUsers,
     groups:      renderGroups,
-    audit:       renderAudit
+    audit:       renderAudit,
+    dealentry:   renderDealEntry,
+    dealhistory: renderDealHistory
   };
   if (pages[page]) pages[page]();
 }
@@ -515,9 +565,8 @@ function requireAdminPwd(callback) {
 
 function checkAdminPwd() {
   if (document.getElementById('pwdInput').value === ADMIN_PWD) {
-    var callback = pwdCallback;
     closePwdModal();
-    if (callback) callback();
+    if (pwdCallback) pwdCallback();
   } else {
     document.getElementById('pwdErr').style.display = 'block';
   }
@@ -740,7 +789,7 @@ async function renderMatching() {
       '<div class="page-hdr" style="display:flex;align-items:baseline;justify-content:space-between">' +
         '<div><div class="page-title">Live Matching</div>' +
         '<div class="page-sub">Real-time buy/sell netting across all companies</div></div>' +
-        (isAdmin ? '<button class="btn btn-success btn-sm" onclick="triggerMatch(this)">▶ Run Auto-Match</button>' : '') +
+        (isAdmin ? '<button class="btn btn-success btn-sm" onclick="triggerMatch()">▶ Run Auto-Match</button>' : '') +
       '</div>' +
 
       (!rate ? '<div class="alert warn"><b>⚠ No rate set today.</b> Set the daily rate first.</div>' : '') +
@@ -1368,15 +1417,12 @@ async function renderAudit() {
 }
 
 /* ════════════════ TRIGGER MATCH ════════════════ */
-async function triggerMatch(btn) {
+async function triggerMatch() {
   requireAdminPwd(async function(){
-    if (btn) {
-      btn.textContent = '⏳ Matching...'; btn.disabled = true;
-    }
+    var btn = event.target;
+    btn.textContent = '⏳ Matching...'; btn.disabled = true;
     await runAutoMatch();
-    if (btn) {
-      btn.textContent = '✅ Done'; btn.disabled = false;
-    }
+    btn.textContent = '✅ Done'; btn.disabled = false;
     setTimeout(function(){ showPage('matching'); }, 800);
   });
 }
@@ -1489,6 +1535,512 @@ setInterval(function(){
   }
   // else: login page stays visible (already shown by default)
 })();
+
+
+/* ════════════════════════════════════════════════
+   FX DEAL ENTRY — embedded in Matching Module
+════════════════════════════════════════════════ */
+
+var FX_PAIR_CFG = {
+  'EUR/USD': {ccy1:'EUR',ccy2:'USD',label:'EUR / USD',pipMult:10000,decimals:5,min:.5,max:3,
+    thresholds:[5,7,8,9],verdicts:['Favourable','Satisfactory','Concerning','High Margin','Red Flag']},
+  'USD/ZAR': {ccy1:'USD',ccy2:'ZAR',label:'USD / ZAR',pipMult:100,decimals:4,min:10,max:25,
+    thresholds:[20,25,30,35],verdicts:['Favourable','Satisfactory','Concerning','High Margin','Red Flag']}
+};
+var fxLiveRates = {'EUR/USD':null,'USD/ZAR':null};
+var fxCurrentPair = 'EUR/USD';
+var fxLiveRate    = null;
+var fxCalcResult  = null;
+
+/* ── Rate Fetching ── */
+function fxXhr(url, ms) {
+  return new Promise(function(res,rej){
+    var x=new XMLHttpRequest(); x.timeout=ms||7000; x.open('GET',url);
+    x.setRequestHeader('Accept','application/json');
+    x.onload=function(){ if(x.status<300){try{res(JSON.parse(x.responseText));}catch(e){rej(e);}}else{rej(new Error('HTTP '+x.status));} };
+    x.onerror=function(){rej(new Error('Network'));};
+    x.ontimeout=function(){rej(new Error('Timeout'));};
+    x.send();
+  });
+}
+
+async function fxFetchRates() {
+  var key='cc7738b264674098a332fbf66ef8adad';
+  var sources=[
+    function(){ return Promise.all([
+      fxXhr('https://api.twelvedata.com/price?symbol=EUR%2FUSD&apikey='+key,7000),
+      fxXhr('https://api.twelvedata.com/price?symbol=USD%2FZAR&apikey='+key,7000)
+    ]).then(function(r){
+      if(!r[0]||r[0].code||!r[0].price) throw new Error('TwelveData no price');
+      return {eu:parseFloat(r[0].price),za:r[1]&&!r[1].code?parseFloat(r[1].price):null,src:'Twelve Data'};
+    });},
+    function(){ return Promise.all([
+      fxXhr('https://query1.finance.yahoo.com/v8/finance/chart/EURUSD%3DX?range=1d&interval=1m',7000),
+      fxXhr('https://query1.finance.yahoo.com/v8/finance/chart/USDZAR%3DX?range=1d&interval=1m',7000)
+    ]).then(function(r){
+      var eu=r[0]&&r[0].chart&&r[0].chart.result?r[0].chart.result[0].meta.regularMarketPrice:null;
+      var za=r[1]&&r[1].chart&&r[1].chart.result?r[1].chart.result[0].meta.regularMarketPrice:null;
+      if(!eu) throw new Error('Yahoo no price');
+      return {eu:parseFloat(eu),za:za?parseFloat(za):null,src:'Yahoo Finance'};
+    });},
+    function(){ return fxXhr('https://open.er-api.com/v6/latest/EUR',7000).then(function(d){
+      if(!d||d.result!=='success') throw new Error('OpenER fail');
+      var eu=d.rates.USD; var za=d.rates.ZAR;
+      return {eu:parseFloat(eu),za:za&&eu?parseFloat((za/eu).toFixed(4)):null,src:'Open ER API'};
+    });}
+  ];
+  for(var i=0;i<sources.length;i++){
+    try{
+      var r=await sources[i]();
+      if(r&&r.eu&&r.eu>.5&&r.eu<3){
+        fxLiveRates['EUR/USD']=r.eu;
+        if(r.za&&r.za>10) fxLiveRates['USD/ZAR']=r.za;
+        return r;
+      }
+    }catch(e){ console.warn('FX source '+i+' failed:',e.message); }
+  }
+  return null;
+}
+
+async function fxRefreshRate(pair) {
+  var el=document.getElementById('fxRateCard');
+  if(el) el.style.opacity='.5';
+  var r=await fxFetchRates();
+  var rate=fxLiveRates[pair||fxCurrentPair];
+  fxLiveRate=rate;
+  if(el){
+    el.style.opacity='1';
+    document.getElementById('fxRateVal').textContent=rate?rate.toFixed(FX_PAIR_CFG[fxCurrentPair].decimals):'—';
+    document.getElementById('fxRateSrc').textContent=r?r.src:'All sources failed';
+  }
+  fxCalculate();
+}
+
+/* ── Pip Calculation ── */
+function fxGetPipCls(pips, pair) {
+  var t=FX_PAIR_CFG[pair||fxCurrentPair].thresholds;
+  if(pips<t[0]) return 'stellar';
+  if(pips<=t[1]) return 'ok';
+  if(pips<=t[2]) return 'caution';
+  if(pips<=t[3]) return 'warn';
+  return 'bad';
+}
+
+function fxCalculate() {
+  var cfg=FX_PAIR_CFG[fxCurrentPair];
+  var bankRateEl=document.getElementById('fxBankRate');
+  var amtEl=document.getElementById('fxAmount');
+  var typeEl=document.getElementById('fxDealType');
+  var confirmBtn=document.getElementById('fxConfirmBtn');
+  if(!bankRateEl||!amtEl) return;
+  var bankRate=parseFloat(bankRateEl.value);
+  var amount=parseFloat(amtEl.value);
+  var spot=fxLiveRate;
+  if(isNaN(bankRate)||bankRate<cfg.min||bankRate>cfg.max||isNaN(amount)||amount<=0||!spot){
+    if(confirmBtn) confirmBtn.disabled=true;
+    document.getElementById('fxPipResult').style.display='none';
+    document.getElementById('fxAmtResult').style.display='none';
+    return;
+  }
+  var pips=Math.abs(bankRate-spot)*cfg.pipMult;
+  var pipCls=fxGetPipCls(pips, fxCurrentPair);
+  var verdicts={stellar:'Favourable',ok:'Satisfactory',caution:'Concerning',warn:'High Margin',bad:'Red Flag'};
+  var type=typeEl?typeEl.value:'SELL_CCY1';
+  var isSellCcy1=(type==='SELL_CCY1');
+  var amtCcy1=isSellCcy1?amount:amount/bankRate;
+  var amtCcy2=isSellCcy1?amount*bankRate:amount;
+
+  // Update pip gauge
+  var maxPip=FX_PAIR_CFG[fxCurrentPair].thresholds[3]*1.3;
+  var pct=Math.min(pips/maxPip,1)*100;
+  var markerEl=document.getElementById('fxGaugeMarker');
+  if(markerEl) markerEl.style.left=pct+'%';
+
+  // Pip result
+  var prEl=document.getElementById('fxPipResult');
+  if(prEl){
+    prEl.className='pip-result '+pipCls;
+    prEl.style.display='flex';
+    prEl.innerHTML='<div><div class="pip-pips '+pipCls+'">'+pips.toFixed(2)+' pips</div>' +
+      '<div style="font-size:11px;color:var(--text3)">'+verdicts[pipCls]+' &middot; ' +
+      (bankRate>spot?'Bank above spot':'Bank below spot')+'</div></div>' +
+      '<div style="text-align:right;font-size:12px;font-weight:600">Marginal Diff<br>' +
+      '<span style="font-family:IBM Plex Mono,monospace">'+Math.abs(bankRate-spot).toFixed(cfg.decimals)+'</span></div>';
+  }
+
+  // Amount result
+  var arEl=document.getElementById('fxAmtResult');
+  if(arEl){
+    arEl.style.display='block';
+    arEl.innerHTML=
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">' +
+      '<div class="amount-result"><div class="ar-label">'+cfg.ccy1+' Amount</div>' +
+        '<div class="ar-val">'+fmtAmt(Math.round(amtCcy1))+'</div>' +
+        '<div class="ar-words">'+fxNumWords(Math.round(amtCcy1),cfg.ccy1)+'</div></div>' +
+      '<div class="amount-result"><div class="ar-label">'+cfg.ccy2+' Amount</div>' +
+        '<div class="ar-val">'+fmtAmt(amtCcy2.toFixed(2))+'</div>' +
+        '<div class="ar-words">'+fxNumWords(Math.round(amtCcy2),cfg.ccy2)+'</div></div>' +
+      '</div>';
+  }
+
+  // Bank benchmark
+  var bench=document.getElementById('fxBenchNote');
+  var bankSel=document.getElementById('fxBank');
+  if(bench&&bankSel&&bankSel.value) {
+    var bColors={stellar:'var(--green)',ok:'var(--accent)',caution:'var(--orange)',warn:'var(--amber)',bad:'var(--red)'};
+    var bBg={stellar:'var(--green-bg)',ok:'var(--accent-bg)',caution:'#fff4ed',warn:'var(--amber-bg)',bad:'var(--red-bg)'};
+    var bBd={stellar:'var(--green-bd)',ok:'var(--accent-bd)',caution:'#f9c9a0',warn:'var(--amber-bd)',bad:'var(--red-bd)'};
+    bench.style.display='block';
+    bench.style.color=bColors[pipCls];
+    bench.style.background=bBg[pipCls];
+    bench.style.borderColor=bBd[pipCls];
+    bench.textContent='Bank Benchmark: '+verdicts[pipCls]+' — '+pips.toFixed(2)+' pips with '+bankSel.options[bankSel.selectedIndex].text;
+  } else if(bench) bench.style.display='none';
+
+  fxCalcResult={bankRate,amount,amtCcy1,amtCcy2,pips,pipCls,spot,cfg};
+  if(confirmBtn) confirmBtn.disabled=false;
+}
+
+/* ── Number to Words (simplified) ── */
+function fxNumWords(n, ccy) {
+  if(!n||isNaN(n)) return '';
+  var ones=['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
+  var tens=['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+  function h(n){
+    if(n===0)return'';
+    if(n<20)return ones[n]+' ';
+    if(n<100)return tens[Math.floor(n/10)]+' '+(n%10?ones[n%10]+' ':'');
+    return ones[Math.floor(n/100)]+' Hundred '+(n%100?h(n%100):'');
+  }
+  var result='';
+  if(n>=1000000) result+=h(Math.floor(n/1000000))+'Million ';
+  if(n%1000000>=1000) result+=h(Math.floor((n%1000000)/1000))+'Thousand ';
+  result+=h(n%1000);
+  return '('+result.trim()+' '+ccy+')';
+}
+
+/* ── Confirm FX Deal ── */
+async function confirmFxDeal() {
+  if(!fxCalcResult) return;
+  if(!fxLiveRate) { alert('No live rate — click the rate card to fetch first'); return; }
+  var c=fxCalcResult, cfg=c.cfg;
+  var dealNo   = document.getElementById('fxDealNo').value||('D'+Date.now());
+  var valueDate= document.getElementById('fxValueDate').value;
+  var givenBy  = document.getElementById('fxGivenBy').value||'—';
+  var bankEl   = document.getElementById('fxBank');
+  var bankId   = bankEl?bankEl.value:'';
+  var bankName = bankEl&&bankEl.selectedIndex>0?bankEl.options[bankEl.selectedIndex].text:'—';
+  var typeEl   = document.getElementById('fxDealType');
+  var typeLabel= typeEl?typeEl.options[typeEl.selectedIndex].text:'—';
+  var today    = new Date().toLocaleDateString('en-GB');
+  var timeStr  = new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+
+  var record = {
+    deal_date:deal_date=today, deal_time:timeStr,
+    pair:fxCurrentPair, type:typeEl?typeEl.value:'SELL_CCY1', type_label:typeLabel,
+    deal_no:dealNo, value_date:valueDate||today,
+    given_by:givenBy, bank:bankId, bank_name:bankName,
+    bank_rate:c.bankRate.toFixed(cfg.decimals),
+    spot_rate:c.spot.toFixed(cfg.decimals),
+    ccy1:cfg.ccy1, ccy2:cfg.ccy2,
+    amt_ccy1:Math.round(c.amtCcy1),
+    amt_ccy2:parseFloat(c.amtCcy2.toFixed(2)),
+    pips:c.pips.toFixed(2), pip_verdict:c.pipCls,
+    marginal_diff:Math.abs(c.bankRate-c.spot).toFixed(cfg.decimals),
+    amount_in_words:fxNumWords(Math.round(c.amtCcy2),cfg.ccy2).replace(/[()]/g,''),
+    created_at:new Date().toISOString(),
+    created_by:currentUser?currentUser.name:''
+  };
+
+  try {
+    await sbPost('fx_deals', record);
+    await logAudit('FX_DEAL_CONFIRMED','fx_deal',dealNo,typeLabel+' '+fmtAmt(c.amtCcy1)+' '+cfg.ccy1+' @ '+c.bankRate.toFixed(cfg.decimals));
+
+    // Build email
+    var emailHtml=fxBuildEmail({
+      typeLabel:typeLabel,pairLabel:cfg.label,ccy1:cfg.ccy1,ccy2:cfg.ccy2,
+      amtCcy1:fmtAmt(Math.round(c.amtCcy1)),amtCcy2:fmtAmt(c.amtCcy2.toFixed(2)),
+      amtCcy1Num:c.amtCcy1,amtCcy2Num:c.amtCcy2,
+      bankRate:c.bankRate.toFixed(cfg.decimals),
+      spotRate:c.spot.toFixed(cfg.decimals),refLbl:c.bankRate>c.spot?'Bid':'Ask',
+      margDiff:Math.abs(c.bankRate-c.spot).toFixed(cfg.decimals),
+      pipsVal:c.pips.toFixed(2),pipCls:c.pipCls,
+      dealNo:dealNo,fmtDate:valueDate||today,
+      givenBy:givenBy,bankName:bankName
+    });
+
+    // Show email panel
+    var ep=document.getElementById('fxEmailPanel');
+    if(ep){
+      ep.style.display='block';
+      document.getElementById('fxEmailSubject').textContent='Forex Deal Confirmation – '+typeLabel+' – '+(valueDate||today)+' – Deal No. '+dealNo;
+      document.getElementById('fxEmailBody').innerHTML=emailHtml;
+      ep.scrollIntoView({behavior:'smooth'});
+    }
+    document.getElementById('fxConfirmBtn').disabled=true;
+    document.getElementById('fxConfirmBtn').textContent='✓ Deal Confirmed';
+    document.getElementById('fxConfirmBtn').style.background='var(--green)';
+  } catch(e) { alert('Error saving deal: '+e.message); }
+}
+
+/* ── Email Builder (compact, no dark theme) ── */
+function fxBuildEmail(p) {
+  var isSell=p.typeLabel.toLowerCase().indexOf('sell')>=0;
+  var tc=isSell?'#b91c1c':'#15803d';
+  var vm={stellar:{bg:'#f0fdf4',bd:'#86efac',txt:'#15803d',icon:'✅',lbl:'Favourable'},
+    ok:{bg:'#eff6ff',bd:'#bfdbfe',txt:'#1d4ed8',icon:'✅',lbl:'Satisfactory'},
+    caution:{bg:'#fff7ed',bd:'#fed7aa',txt:'#c2410c',icon:'⚠',lbl:'Concerning'},
+    warn:{bg:'#fffbeb',bd:'#fde68a',txt:'#92400e',icon:'⚠',lbl:'High Margin'},
+    bad:{bg:'#fef2f2',bd:'#fca5a5',txt:'#b91c1c',icon:'✗',lbl:'Red Flag'}};
+  var v=vm[p.pipCls]||vm.ok;
+  function tr(l,val){return '<tr><td style="padding:5px 8px;font-size:12px;font-weight:600;color:#4b5563;background:#f9fafb;border:1px solid #e5e7eb;white-space:nowrap;width:36%">'+l+'</td><td style="padding:5px 8px;font-size:12px;color:#111827;border:1px solid #e5e7eb;font-family:Consolas,monospace">'+val+'</td></tr>';}
+  function trA(l,d,ccy){var w=fxNumWords(Math.round(parseFloat(String(d).replace(/,/g,''))),ccy);return '<tr><td style="padding:5px 8px;font-size:12px;font-weight:600;color:#4b5563;background:#f9fafb;border:1px solid #e5e7eb;white-space:nowrap;width:36%">'+l+'</td><td style="padding:5px 8px;border:1px solid #e5e7eb"><span style="font-size:13px;font-weight:700;color:#111827;font-family:Consolas,monospace">'+d+'</span>'+(w?'<br><span style="font-size:10px;color:#6366f1;font-style:italic;font-family:Arial">'+w+'</span>':'')+'</td></tr>';}
+  return '<table width="500" cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,sans-serif;font-size:13px;color:#111827;max-width:500px;width:500px;table-layout:fixed">'
+  +'<tr><td><p style="font-size:14px;font-weight:700;margin:0 0 3px">Dear Team</p><p style="color:#6b7280;font-size:12px;margin:0 0 10px">Please find below the Forex Deal details for your reference:</p>'
+  +'<table width="100%" cellpadding="0" cellspacing="0" style="border-bottom:2px solid '+tc+';margin-bottom:8px"><tr><td style="padding:4px 0;font-size:13px;font-weight:700;color:'+tc+'">'+(isSell?'▼':'▲')+' '+p.typeLabel+'</td><td style="text-align:right;font-size:12px;font-weight:600;color:#374151">Deal No. <span style="font-family:Consolas;color:#111827">'+p.dealNo+'</span></td></tr></table>'
+  +'<p style="font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.8px;margin:0 0 4px">Deal Details</p>'
+  +'<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-bottom:8px">'
+  +tr('Deal Rate',p.bankRate)+trA(p.ccy1+' Amount',p.amtCcy1,p.ccy1)+trA(p.ccy2+' Amount',p.amtCcy2,p.ccy2)
+  +tr('Value Date',p.fmtDate)+tr('Bank',p.bankName)+tr('Given By',p.givenBy)+'</table>'
+  +'<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:6px"><tr><td style="padding:5px 8px;background:'+v.bg+';border:1px solid '+v.bd+';border-radius:3px;font-size:12px;color:'+v.txt+'">'+v.icon+' <b>'+v.lbl+'</b> <span style="font-weight:400;font-size:11px">( As per GRF Treasury Policy Assessment )</span></td></tr></table>'
+  +'<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:10px"><tr><td style="padding:5px 8px;background:#fffbeb;border:1px solid #fde68a;text-align:center;font-size:12px;font-weight:700;color:#92400e">⏰ Use This Deal After 20 Minutes</td></tr></table>'
+  +'<table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #e5e7eb"><tr><td style="padding-top:6px;font-size:11px;color:#9ca3af">GRF Treasury FX System<br>Generated '+p.fmtDate+'</td><td style="text-align:right;padding-top:6px"><span style="font-size:12px;font-weight:600;color:#374151">Regards,<br><span style="color:#1d4ed8;font-weight:700">Eldhose Scaria</span></span></td></tr></table>'
+  +'</td></tr></table>';
+}
+
+/* ── Outlook Push ── */
+function fxPushOutlook() {
+  var subj=document.getElementById('fxEmailSubject').textContent;
+  var body=document.getElementById('fxEmailBody').innerHTML;
+  // Copy HTML to clipboard
+  var el=document.createElement('div'); el.setAttribute('contenteditable','true');
+  el.style.cssText='position:fixed;left:-9999px;top:0;opacity:0';
+  el.innerHTML=body; document.body.appendChild(el); el.focus();
+  var range=document.createRange(); range.selectNodeContents(el);
+  window.getSelection().removeAllRanges(); window.getSelection().addRange(range);
+  document.execCommand('copy');
+  window.getSelection().removeAllRanges(); document.body.removeChild(el);
+  // Open Outlook
+  window.location.href='mailto:?subject='+encodeURIComponent(subj);
+  alert('Outlook is opening.\n\n1. Click in the email body\n2. Press Ctrl+V to paste the formatted email');
+}
+
+/* ── Render Deal Entry Page ── */
+async function renderDealEntry() {
+  var main=document.getElementById('mainContent');
+  fxCalcResult=null; fxLiveRate=null;
+
+  // Load banks and given-by from Supabase
+  var banks=[],givenBys=[];
+  try { banks=await sbGet('bank_master','select=*&active=eq.true&order=bank_id'); } catch(e){}
+  try { givenBys=await sbGet('given_by_master','select=*&active=eq.true&order=name'); } catch(e){}
+
+  main.innerHTML=
+  '<div class="page-hdr"><div class="page-title">FX Deal Entry</div>' +
+    '<div class="page-sub">Negotiate and confirm interbank forex deals</div></div>' +
+
+  // Pair selector
+  '<div class="pair-tab-row">' +
+    '<button class="pair-tab active" id="ptEURUSD" onclick="fxSetPair(\'EUR/USD\')">EUR / USD</button>' +
+    '<button class="pair-tab" id="ptUSDZAR" onclick="fxSetPair(\'USD/ZAR\')">USD / ZAR</button>' +
+  '</div>' +
+
+  // Rate card (click to refresh)
+  '<div class="rate-card" id="fxRateCard" onclick="fxRefreshRate()" title="Click to fetch live rate">' +
+    '<div><div class="rc-label" id="fxRatePairLabel">EUR / USD — Market Rate</div>' +
+      '<div class="rc-val" id="fxRateVal">—</div>' +
+      '<div class="rc-src" id="fxRateSrc">Click to fetch live rate</div>' +
+    '</div>' +
+    '<div style="text-align:right">' +
+      '<div class="rc-dir" id="fxRateDir"></div>' +
+      '<div style="font-size:11px;color:rgba(255,255,255,.3);margin-top:6px">Click to refresh</div>' +
+    '</div>' +
+  '</div>' +
+
+  '<div class="grid-2">' +
+  // ─ Left: Deal form
+  '<div class="card">' +
+    '<div class="card-hdr"><div class="card-title">Deal Form</div></div>' +
+
+    '<div class="fg"><label class="flbl">Deal Type</label>' +
+      '<select class="fsel" id="fxDealType" onchange="fxCalculate()">' +
+        '<option value="SELL_CCY1">SELL EUR / BUY USD</option>' +
+        '<option value="BUY_CCY1">BUY EUR / SELL USD</option>' +
+      '</select>' +
+    '</div>' +
+
+    '<div class="fg"><label class="flbl">Bank Deal Rate</label>' +
+      '<input class="fi" type="number" id="fxBankRate" step="0.00001" placeholder="e.g. 1.17726" oninput="fxCalculate()">' +
+    '</div>' +
+
+    '<div class="fg"><label class="flbl" id="fxAmtLabel">Amount (EUR)</label>' +
+      '<input class="fi" type="number" id="fxAmount" placeholder="e.g. 500000" oninput="fxCalculate()">' +
+    '</div>' +
+
+    '<div class="pip-gauge"><div class="pip-gauge-marker" id="fxGaugeMarker" style="left:0%"></div></div>' +
+    '<div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text4);margin-bottom:8px">' +
+      '<span>0 — Favourable</span><span>Mid</span><span>Red Flag ▶</span>' +
+    '</div>' +
+
+    '<div id="fxPipResult" class="pip-result" style="display:none"></div>' +
+    '<div id="fxAmtResult" style="display:none"></div>' +
+    '<div id="fxBenchNote" class="bench-note" style="display:none"></div>' +
+
+    '<div class="fg"><label class="flbl">Deal No.</label>' +
+      '<input class="fi" type="text" id="fxDealNo" placeholder="e.g. 307785">' +
+    '</div>' +
+    '<div class="fg"><label class="flbl">Value Date</label>' +
+      '<input class="fi" type="date" id="fxValueDate">' +
+    '</div>' +
+
+    '<button class="deal-confirm-btn" id="fxConfirmBtn" onclick="confirmFxDeal()" disabled>Confirm Deal &amp; Generate Email</button>' +
+  '</div>' +
+
+  // ─ Right: Bank + Given By + Email
+  '<div>' +
+    '<div class="card" style="margin-bottom:12px">' +
+      '<div class="card-hdr"><div class="card-title">Counterpart</div></div>' +
+      '<div class="fg"><label class="flbl">Bank</label>' +
+        '<select class="fsel" id="fxBank" onchange="fxBankAutoGivenBy();fxCalculate()">' +
+          '<option value="">— Select Bank —</option>' +
+          banks.map(function(b){ return '<option value="'+b.bank_id+'">'+b.bank_name+'</option>'; }).join('') +
+        '</select>' +
+      '</div>' +
+      '<div class="fg"><label class="flbl">Given By</label>' +
+        '<select class="fsel" id="fxGivenBy" onchange="fxGivenByAutoBank()">' +
+          '<option value="">— Select —</option>' +
+          givenBys.map(function(g){ return '<option value="'+g.name+'" data-bank="'+(g.bank_id||'')+'">'+g.name+'</option>'; }).join('') +
+        '</select>' +
+      '</div>' +
+    '</div>' +
+
+    // Email panel (hidden until confirmed)
+    '<div id="fxEmailPanel" style="display:none">' +
+      '<div class="card">' +
+        '<div class="card-hdr"><div class="card-title">📧 Deal Email</div>' +
+          '<div style="display:flex;gap:6px">' +
+            '<button class="btn btn-primary btn-sm" style="background:#0078d4" onclick="fxPushOutlook()">📩 Send to Outlook</button>' +
+            '<button class="btn btn-ghost btn-sm" onclick="fxCopyHtml()">📋 Copy HTML</button>' +
+          '</div>' +
+        '</div>' +
+        '<div style="font-size:12px;font-weight:600;color:var(--text3);margin-bottom:6px" id="fxEmailSubject"></div>' +
+        '<div class="email-preview-wrap" id="fxEmailBody"></div>' +
+      '</div>' +
+    '</div>' +
+  '</div>' + // right col
+  '</div>'; // grid-2
+
+  // Auto-fetch rate
+  fxRefreshRate(fxCurrentPair);
+
+  // Set today's date as default value date
+  var vd=document.getElementById('fxValueDate');
+  if(vd) vd.value=new Date().toISOString().slice(0,10);
+
+  // Store given-by data for auto-populate
+  window._fxGivenBys=givenBys;
+  window._fxBanks=banks;
+}
+
+function fxSetPair(pair) {
+  fxCurrentPair=pair;
+  document.getElementById('ptEURUSD').classList.toggle('active',pair==='EUR/USD');
+  document.getElementById('ptUSDZAR').classList.toggle('active',pair==='USD/ZAR');
+  var cfg=FX_PAIR_CFG[pair];
+  document.getElementById('fxRatePairLabel').textContent=cfg.label+' — Market Rate';
+  document.getElementById('fxRateVal').textContent=fxLiveRates[pair]?fxLiveRates[pair].toFixed(cfg.decimals):'—';
+  // Update deal type options
+  var dt=document.getElementById('fxDealType');
+  if(dt) {
+    dt.innerHTML=pair==='EUR/USD'
+      ? '<option value="SELL_CCY1">SELL EUR / BUY USD</option><option value="BUY_CCY1">BUY EUR / SELL USD</option>'
+      : '<option value="SELL_CCY1">SELL USD / BUY ZAR</option><option value="BUY_CCY1">BUY USD / SELL ZAR</option>';
+  }
+  var al=document.getElementById('fxAmtLabel');
+  if(al) al.textContent='Amount ('+cfg.ccy1+')';
+  fxLiveRate=fxLiveRates[pair]||null;
+  fxCalculate();
+}
+
+function fxBankAutoGivenBy() {
+  var bankId=document.getElementById('fxBank').value;
+  var gbSel=document.getElementById('fxGivenBy');
+  if(!bankId||!gbSel) return;
+  var match=(window._fxGivenBys||[]).find(function(g){ return g.bank_id===bankId&&g.active; });
+  if(match) gbSel.value=match.name;
+}
+
+function fxGivenByAutoBank() {
+  var sel=document.getElementById('fxGivenBy');
+  var opt=sel.options[sel.selectedIndex];
+  var bankId=opt?opt.getAttribute('data-bank'):'';
+  var bankSel=document.getElementById('fxBank');
+  if(bankId&&bankSel) bankSel.value=bankId;
+  fxCalculate();
+}
+
+function fxCopyHtml() {
+  var body=document.getElementById('fxEmailBody');
+  var el=document.createElement('div'); el.setAttribute('contenteditable','true');
+  el.style.cssText='position:fixed;left:-9999px;top:0;opacity:0';
+  el.innerHTML=body.innerHTML; document.body.appendChild(el); el.focus();
+  var range=document.createRange(); range.selectNodeContents(el);
+  window.getSelection().removeAllRanges(); window.getSelection().addRange(range);
+  document.execCommand('copy');
+  window.getSelection().removeAllRanges(); document.body.removeChild(el);
+  var btn=event.target; btn.textContent='✓ Copied!';
+  setTimeout(function(){ btn.textContent='📋 Copy HTML'; }, 2000);
+}
+
+/* ── Render Deal History Page ── */
+async function renderDealHistory() {
+  var main=document.getElementById('mainContent');
+  main.innerHTML='<div class="empty"><div class="empty-icon">⏳</div></div>';
+  try {
+    var deals=await sbGet('fx_deals','select=*&order=created_at.desc&limit=200');
+    var totalVol=deals.reduce(function(s,d){ return s+(parseFloat(d.amt_ccy1)||0); },0);
+    var avgPip=deals.length?deals.reduce(function(s,d){ return s+(parseFloat(d.pips)||0); },0)/deals.length:0;
+
+    main.innerHTML=
+      '<div class="page-hdr"><div class="page-title">Deal History</div>' +
+        '<div class="page-sub">All confirmed FX deals</div></div>' +
+
+      '<div class="grid-4" style="margin-bottom:14px">' +
+        kpi('Total Deals', deals.length, 'confirmed deals', 'blue') +
+        kpi('Total Volume', fmtAmt(Math.round(totalVol)), 'CCY1 transacted', 'teal') +
+        kpi('Avg Pip Margin', avgPip.toFixed(2), 'average pips per deal', 'amber') +
+        kpi('Today', deals.filter(function(d){ return d.deal_date===new Date().toLocaleDateString('en-GB'); }).length, 'deals today', 'green') +
+      '</div>' +
+
+      (deals.length
+        ? '<div class="card"><div class="tbl-wrap"><table>' +
+            '<thead><tr><th>Date</th><th>Pair</th><th>Type</th><th>Bank</th>' +
+              '<th class="r">CCY1 Amt</th><th class="r">CCY2 Amt</th>' +
+              '<th class="r">Rate</th><th class="r">Pips</th>' +
+              '<th>Verdict</th><th>Given By</th><th>Deal No.</th></tr></thead><tbody>' +
+            deals.map(function(d){
+              var vc={stellar:'var(--green)',ok:'var(--accent)',caution:'var(--orange)',warn:'var(--amber)',bad:'var(--red)'};
+              var vl={stellar:'Favourable',ok:'Satisfactory',caution:'Concerning',warn:'High Margin',bad:'Red Flag'};
+              return '<tr>' +
+                '<td class="dim">'+d.deal_date+' '+d.deal_time+'</td>' +
+                '<td style="font-weight:600;font-size:12px">'+d.pair+'</td>' +
+                '<td><span class="badge '+(d.type&&d.type.indexOf('SELL')>=0?'sell':'buy')+'">'+d.type_label+'</span></td>' +
+                '<td class="dim">'+d.bank+'</td>' +
+                '<td class="r">'+fmtAmt(d.amt_ccy1)+'</td>' +
+                '<td class="r">'+fmtAmt(d.amt_ccy2)+'</td>' +
+                '<td class="r" style="font-family:IBM Plex Mono,monospace">'+d.bank_rate+'</td>' +
+                '<td class="r"><span style="color:'+(vc[d.pip_verdict]||'inherit')+';font-weight:700">'+d.pips+'</span></td>' +
+                '<td><span style="font-size:11px;font-weight:700;color:'+(vc[d.pip_verdict]||'inherit')+'">'+( vl[d.pip_verdict]||d.pip_verdict||'—')+'</span></td>' +
+                '<td class="dim">'+d.given_by+'</td>' +
+                '<td class="dim" style="font-family:IBM Plex Mono,monospace">'+d.deal_no+'</td>' +
+              '</tr>';
+            }).join('') +
+          '</tbody></table></div></div>'
+        : '<div class="empty"><div class="empty-icon">📈</div><div class="empty-title">No deals yet</div><div class="empty-sub">Confirm your first deal in the Deal Entry page</div></div>');
+  } catch(e) {
+    main.innerHTML='<div class="alert danger">Error loading deals: '+e.message+'</div>';
+  }
+}
 
 </script>
 </body>
